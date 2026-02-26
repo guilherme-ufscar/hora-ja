@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+  /* Cores base */
+  --background: #f5f7fa;
+  /* Branco gelo */
+  --foreground: #1e293b;
+  /* Grafite suave */
+
+  /* Cores de acento */
+  --primary: #10b981;
+  /* Esmeralda */
+  --primary-hover: #059669;
+
+  /* Card */
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(255, 255, 255, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f172a;
+    /* Fundo grafite escuro */
+    --foreground: #f8fafc;
+    /* Texto claro */
+
+    --card-bg: rgba(30, 41, 59, 0.6);
+    --card-border: rgba(255, 255, 255, 0.1);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  /* Fallback minimal background texture */
+  background-image: radial-gradient(var(--card-border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Utilitários de Glassmorphism e Bento Grid */
+@layer utilities {
+  .glass-panel {
+    @apply bg-card-bg backdrop-blur-xl border border-card-border shadow-2xl rounded-[2rem];
+  }
+
+  .glass-header {
+    @apply bg-background/70 backdrop-blur-md border-b border-card-border;
+  }
+}
+
+/* Base styles para remover setinhas do input type number */
+@layer base {
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
