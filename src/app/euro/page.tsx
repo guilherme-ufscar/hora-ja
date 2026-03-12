@@ -2,6 +2,7 @@ import { getCurrencies } from "@/lib/api";
 import { formatCurrency, formatLastUpdate, formatPercentage } from "@/lib/formatters";
 import FAQ from "@/components/FAQ";
 import FAQJsonLd from "@/components/FAQJsonLd";
+import CurrencyHistory from "@/components/CurrencyHistory";
 
 const euroFaq = [
     {
@@ -90,6 +91,11 @@ export default async function EuroPage() {
                 <p>
                     Devido aos fortes laços comerciais do Brasil com a Europa, a cotação do Euro afeta os custos de importação e exportação da indústria nacional, além de ser o referencial para o turismo em países europeus dominantes comercialmente como Alemanha, França, e Itália.
                 </p>
+            </section>
+
+            {/* Histórico */}
+            <section className="mb-16">
+                <CurrencyHistory base="eur" days={5} />
             </section>
 
             {/* FAQ Específico */}

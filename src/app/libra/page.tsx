@@ -2,6 +2,7 @@ import { getCurrencies } from "@/lib/api";
 import { formatCurrency, formatLastUpdate, formatPercentage } from "@/lib/formatters";
 import FAQ from "@/components/FAQ";
 import FAQJsonLd from "@/components/FAQJsonLd";
+import CurrencyHistory from "@/components/CurrencyHistory";
 
 const libraFaq = [
     {
@@ -86,6 +87,11 @@ export default async function LibraPage() {
                 <p>
                     A Libra Esterlina (GBP) é a moeda do Reino Unido e uma das divisas mais influentes e valorizadas do mercado internacional. Considerada uma moeda historicamente muito forte e de grande reserva de valor, a libra comanda uma alta taxa de câmbio perante moedas de países emergentes, como o Brasil.
                 </p>
+            </section>
+
+            {/* Histórico */}
+            <section className="mb-16">
+                <CurrencyHistory base="gbp" days={5} />
             </section>
 
             {/* FAQ Específico */}

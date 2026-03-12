@@ -2,6 +2,7 @@ import { getCurrencies } from "@/lib/api";
 import { formatCurrency, formatLastUpdate, formatPercentage } from "@/lib/formatters";
 import FAQ from "@/components/FAQ";
 import FAQJsonLd from "@/components/FAQJsonLd";
+import CurrencyHistory from "@/components/CurrencyHistory";
 
 const dolarFaq = [
     {
@@ -94,6 +95,11 @@ export default async function DolarPage() {
                 <p>
                     As flutuações que você acompanha acima em tempo real são definidas pela lei de oferta e demanda no mercado internacional, e impactam diretamente a inflação e o preço dos produtos que consumimos diariamente.
                 </p>
+            </section>
+
+            {/* Histórico */}
+            <section className="mb-16">
+                <CurrencyHistory base="usd" days={5} />
             </section>
 
             {/* FAQ Específico */}
