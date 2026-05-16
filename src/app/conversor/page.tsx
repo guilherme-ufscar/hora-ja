@@ -75,7 +75,9 @@ export default async function ConversorPage() {
                 <AdSlot label="Banner mobile entre seções" width={320} height={50} />
             </section>
 
-            <ExchangeAlerts currencies={currencies} />
+            <section className="max-w-5xl mx-auto">
+                <ExchangeAlerts currencies={currencies} />
+            </section>
 
             <section className="max-w-4xl mx-auto prose prose-slate dark:prose-invert mt-16">
                 <h2>Como usar o conversor com mais inteligência</h2>

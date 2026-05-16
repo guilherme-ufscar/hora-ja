@@ -94,7 +94,7 @@ export default function MarketClockGrid() {
                 <span className="text-xs font-bold tracking-[0.25em] uppercase text-primary">Mercados mundiais</span>
                 <h2 className="text-3xl font-black tracking-tight text-foreground">Relógio global dos principais centros financeiros</h2>
                 <p className="text-foreground/60 max-w-3xl">
-                    Acompanhe o horário local dos mercados e veja rapidamente se cada praça está aberta ou fechada neste momento.
+                    Acompanhe em tempo real São Paulo, Nova York, Londres, Frankfurt, Tóquio e Xangai usando Intl.DateTimeFormat nativo, com indicação visual de mercado aberto ou fechado.
                 </p>
             </div>
 

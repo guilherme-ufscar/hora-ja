@@ -10,6 +10,9 @@ const navItems = [
     { href: "/libra", label: "Libra" },
     { href: "/peso-argentino", label: "Peso ARS" },
     { href: "/dolar-canadense", label: "CAD" },
+    { href: "/iene", label: "JPY" },
+    { href: "/franco-suico", label: "CHF" },
+    { href: "/yuan", label: "CNY" },
     { href: "/conversor", label: "Conversor" },
 ];
 
@@ -66,9 +69,6 @@ export default function Header() {
                                 {item.label}
                             </Link>
                         ))}
-                        <Link href="/iene" onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors">Iene</Link>
-                        <Link href="/franco-suico" onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors">Franco suíço</Link>
-                        <Link href="/yuan" onClick={() => setIsMenuOpen(false)} className="hover:text-primary transition-colors">Yuan</Link>
                     </nav>
                 </div>
             )}
