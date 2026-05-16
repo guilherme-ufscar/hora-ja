@@ -73,6 +73,18 @@ const ONE_DAY = 86400;
 const AWESOME_API_KEY = process.env.AWESOMEAPI_KEY;
 const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
 
+const EMERGENCY_RATES: Record<CurrencyCode, number> = {
+    BRL: 1,
+    USD: 5.65,
+    EUR: 6.15,
+    GBP: 7.25,
+    ARS: 0.0054,
+    CAD: 4.12,
+    CHF: 6.55,
+    JPY: 0.039,
+    CNY: 0.78,
+};
+
 function parseNumber(value: string | number | undefined): number {
     const parsed = typeof value === "number" ? value : Number.parseFloat(value ?? "0");
     return Number.isFinite(parsed) ? parsed : 0;
@@ -130,6 +142,27 @@ function normalizeQuote(code: CurrencyCode, quote: AwesomeApiQuote): AppCurrency
         createDate: quote.create_date,
         flag: definition.flag,
         route: definition.route,
+    };
+}
+
+function buildEmergencyCurrency(code: CurrencyCode): AppCurrencyData {
+    const definition = currencyMap[code];
+    const bid = EMERGENCY_RATES[code];
+
+    return {
+        id: code,
+        name: definition.name,
+        symbol: definition.symbol,
+        bid,
+        ask: bid,
+        high: bid,
+        low: bid,
+        pctChange: 0,
+        varBid: 0,
+        createDate: new Date().toISOString(),
+        flag: definition.flag,
+        route: definition.route,
+        isStale: true,
     };
 }
 
@@ -245,7 +278,7 @@ async function buildFallbackCurrency(code: CurrencyCode): Promise<AppCurrencyDat
     ]);
 
     if (bid === null) {
-        return null;
+        return buildEmergencyCurrency(code);
     }
 
     const varBid = previousBid !== null ? bid - previousBid : 0;
@@ -322,7 +355,15 @@ export async function getCurrencies(): Promise<Record<string, AppCurrencyData | 
             supportedCurrencyCodes.map(async (code) => [code, await buildFallbackCurrency(code)] as const),
         );
 
-        return Object.fromEntries(fallbackEntries) as Record<string, AppCurrencyData | null>;
+        const fallbackResult = Object.fromEntries(fallbackEntries) as Record<string, AppCurrencyData | null>;
+
+        for (const code of supportedCurrencyCodes) {
+            if (!fallbackResult[code]) {
+                fallbackResult[code] = buildEmergencyCurrency(code);
+            }
+        }
+
+        return fallbackResult;
     }
 }
 
@@ -367,7 +408,26 @@ export async function getCurrencyHistory(base: string, days = 5): Promise<Histor
             }),
         );
 
-        return points.filter((point): point is HistoricalDataPoint => point !== null);
+        const filtered = points.filter((point): point is HistoricalDataPoint => point !== null);
+
+        if (filtered.length > 0) {
+            return filtered;
+        }
+
+        const bid = EMERGENCY_RATES[code];
+        return Array.from({ length: days }, (_, index) => {
+            const date = dateToString(subtractDays(today, days - 1 - index));
+            return {
+                date,
+                bid,
+                ask: bid,
+                high: bid,
+                low: bid,
+                pctChange: 0,
+                varBid: 0,
+                createDate: `${date} 00:00:00`,
+            } satisfies HistoricalDataPoint;
+        });
     }
 }
 
@@ -390,17 +450,15 @@ export async function getRecentQuotes(base: string, count = 5): Promise<RecentQu
         console.error(`Falha ao buscar cotações recentes de ${pair}:`, error);
 
         const fallback = await buildFallbackCurrency(code);
-        if (!fallback) {
-            return [];
-        }
+        const safeFallback = fallback ?? buildEmergencyCurrency(code);
 
         return Array.from({ length: count }, (_, index) => ({
-            bid: fallback.bid,
-            ask: fallback.ask,
-            high: fallback.high,
-            low: fallback.low,
-            pctChange: fallback.pctChange,
-            varBid: fallback.varBid,
+            bid: safeFallback.bid,
+            ask: safeFallback.ask,
+            high: safeFallback.high,
+            low: safeFallback.low,
+            pctChange: safeFallback.pctChange,
+            varBid: safeFallback.varBid,
             createDate: new Date(Date.now() - index * 60_000).toISOString(),
             timestamp: String(Math.floor((Date.now() - index * 60_000) / 1000)),
         })).reverse();
