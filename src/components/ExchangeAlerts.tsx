@@ -159,9 +159,9 @@ export default function ExchangeAlerts({ currencies }: ExchangeAlertsProps) {
         <section className="glass-panel p-6 sm:p-8 rounded-[2rem] mt-12">
             <div className="flex flex-col gap-3 mb-6">
                 <span className="text-xs font-bold uppercase tracking-[0.25em] text-primary">Alertas de cotação</span>
-                <h3 className="text-3xl font-black tracking-tight text-foreground">Crie alertas de navegador para acompanhar o preço alvo</h3>
+                <h3 className="text-3xl font-black tracking-tight text-foreground">Crie alertas de cotação por moeda, valor e direção</h3>
                 <p className="text-foreground/60">
-                    Os alertas ficam salvos localmente neste navegador e disparam quando a cotação carregada no site cruza o alvo configurado. O limite é de 3 alertas ativos.
+                    Configure moeda, valor alvo e direção acima/abaixo. Os alertas ficam salvos no localStorage do navegador e o limite é de 3 alertas ativos por usuário neste dispositivo.
                 </p>
             </div>
 

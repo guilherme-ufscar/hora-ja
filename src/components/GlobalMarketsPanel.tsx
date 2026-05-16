@@ -20,7 +20,7 @@ export default async function GlobalMarketsPanel() {
         return (
             <section className="mt-20">
                 <div className="glass-panel p-6 rounded-3xl text-center text-foreground/50">
-                    Painel de mercados disponível assim que a integração com a Alpha Vantage estiver configurada.
+                    Painel de mercados globais ativo no layout. Se os dados não aparecerem aqui, falta apenas configurar a chave da Alpha Vantage no ambiente do servidor.
                 </div>
             </section>
         );

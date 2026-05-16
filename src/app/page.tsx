@@ -5,6 +5,7 @@ import FAQJsonLd from "@/components/FAQJsonLd";
 import AdSlot from "@/components/AdSlot";
 import GlobalMarketsPanel from "@/components/GlobalMarketsPanel";
 import MarketClockGrid from "@/components/MarketClockGrid";
+import CurrencyQuickLinks from "@/components/CurrencyQuickLinks";
 import { getFeaturedCurrencies } from "@/lib/api";
 import { homepageFaq } from "@/lib/site-content";
 import { buildStaticMetadata } from "@/lib/metadata";
@@ -54,6 +55,7 @@ export default async function Home() {
                     </div>
                 </section>
 
+                <CurrencyQuickLinks />
                 <GlobalMarketsPanel />
                 <MarketClockGrid />
 
