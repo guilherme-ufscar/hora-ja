@@ -1,38 +1,31 @@
 import { MetadataRoute } from "next";
+import { currencyDefinitions } from "@/lib/currencies";
+import { SITE_URL } from "@/lib/metadata";
+import { articleContent } from "@/lib/site-content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = "https://horaja.com.br"; // Exemplo de domínio base em produção
+    const staticRoutes = [
+        "/",
+        "/conversor",
+        articleContent.iof.slug,
+        articleContent.exterior.slug,
+        articleContent.dolar.slug,
+    ];
 
     return [
-        {
-            url: `${baseUrl}/`,
+        ...staticRoutes.map((route) => ({
+            url: `${SITE_URL}${route}`,
             lastModified: new Date(),
-            changeFrequency: "hourly",
-            priority: 1,
-        },
-        {
-            url: `${baseUrl}/dolar`,
-            lastModified: new Date(),
-            changeFrequency: "hourly",
-            priority: 0.9,
-        },
-        {
-            url: `${baseUrl}/euro`,
-            lastModified: new Date(),
-            changeFrequency: "hourly",
-            priority: 0.9,
-        },
-        {
-            url: `${baseUrl}/libra`,
-            lastModified: new Date(),
-            changeFrequency: "hourly",
-            priority: 0.9,
-        },
-        {
-            url: `${baseUrl}/conversor`,
-            lastModified: new Date(),
-            changeFrequency: "weekly",
-            priority: 0.8,
-        },
+            changeFrequency: route === "/" ? "hourly" : "weekly",
+            priority: route === "/" ? 1 : 0.8,
+        })),
+        ...currencyDefinitions
+            .filter((currency) => currency.code !== "BRL")
+            .map((currency) => ({
+                url: `${SITE_URL}${currency.route}`,
+                lastModified: new Date(),
+                changeFrequency: "hourly" as const,
+                priority: currency.priority === "high" ? 0.9 : 0.75,
+            })),
     ];
 }

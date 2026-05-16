@@ -5,10 +5,10 @@ import { buildCurrencyPageMetadata } from "@/lib/currency-pages";
 export const revalidate = 600;
 
 export async function generateMetadata() {
-    return buildCurrencyPageMetadata("EUR");
+    return buildCurrencyPageMetadata("ARS");
 }
 
-export default async function EuroPage() {
-    const data = await getCurrencyByCode("EUR");
-    return <CurrencyPageTemplate code="EUR" data={data} />;
+export default async function PesoArgentinoPage() {
+    const data = await getCurrencyByCode("ARS");
+    return <CurrencyPageTemplate code="ARS" data={data} />;
 }

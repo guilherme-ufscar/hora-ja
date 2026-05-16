@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import { SITE_URL } from "@/lib/metadata";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -9,20 +10,21 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Hora Já | Cotações e Horário",
-  description: "Plataforma rápida e moderna para consultar o horário de Brasília e as principais cotações de moedas.",
+  metadataBase: new URL(SITE_URL),
+  title: "HoraJá Cambio | Cotações e conversor",
+  description: "Plataforma para acompanhar cotações, comparar IOF, visualizar histórico cambial e consultar horários de mercados globais.",
   openGraph: {
-    title: "Hora Já | Cotações e Horário",
-    description: "Plataforma rápida e moderna para consultar o horário de Brasília e as principais cotações de moedas.",
-    url: "https://horaja.com.br",
-    siteName: "Hora Já",
+    title: "HoraJá Cambio | Cotações e conversor",
+    description: "Plataforma para acompanhar cotações, comparar IOF, visualizar histórico cambial e consultar horários de mercados globais.",
+    url: SITE_URL,
+    siteName: "HoraJá Cambio",
     locale: "pt_BR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hora Já | Cotações e Horário",
-    description: "Consulte o horário de Brasília e converta moedas super rápido.",
+    title: "HoraJá Cambio | Cotações e conversor",
+    description: "Consulte cotações em tempo real, IOF e histórico de moedas em uma experiência rápida e moderna.",
   },
 };
 
