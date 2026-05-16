@@ -313,7 +313,7 @@ export async function getGlobalMarketSnapshots(): Promise<GlobalMarketSnapshot[]
 
     const marketState = inferMarketState();
 
-    const snapshots = await Promise.all(
+    const snapshots: Array<GlobalMarketSnapshot | null> = await Promise.all(
         globalMarketConfig.map(async (market) => {
             try {
                 const url = `${ALPHA_VANTAGE_BASE_URL}?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(market.symbol)}&apikey=${ALPHA_VANTAGE_API_KEY}`;
