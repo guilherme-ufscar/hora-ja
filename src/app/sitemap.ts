@@ -13,19 +13,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ];
 
     return [
-        ...staticRoutes.map((route) => ({
-            url: `${SITE_URL}${route}`,
-            lastModified: new Date(),
-            changeFrequency: route === "/" ? "hourly" : "weekly",
-            priority: route === "/" ? 1 : 0.8,
-        })),
+        ...staticRoutes.map(
+            (route): MetadataRoute.Sitemap[number] => ({
+                url: `${SITE_URL}${route}`,
+                lastModified: new Date(),
+                changeFrequency: route === "/" ? "hourly" : "weekly",
+                priority: route === "/" ? 1 : 0.8,
+            }),
+        ),
         ...currencyDefinitions
             .filter((currency) => currency.code !== "BRL")
-            .map((currency) => ({
-                url: `${SITE_URL}${currency.route}`,
-                lastModified: new Date(),
-                changeFrequency: "hourly" as const,
-                priority: currency.priority === "high" ? 0.9 : 0.75,
-            })),
+            .map(
+                (currency): MetadataRoute.Sitemap[number] => ({
+                    url: `${SITE_URL}${currency.route}`,
+                    lastModified: new Date(),
+                    changeFrequency: "hourly",
+                    priority: currency.priority === "high" ? 0.9 : 0.75,
+                }),
+            ),
     ];
 }
