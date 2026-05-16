@@ -7,7 +7,7 @@ export default function AffiliateSection() {
                 <span className="text-xs font-bold tracking-[0.25em] uppercase text-primary">Onde comprar câmbio</span>
                 <h2 className="text-3xl font-black tracking-tight text-foreground">Parceiros para comparar antes de fechar a operação</h2>
                 <p className="text-foreground/60 max-w-3xl">
-                    Use estes parceiros como ponto de comparação para taxa efetiva, praticidade, prazo de entrega e custo total da operação.
+                    Cada página de moeda traz estes parceiros com links preparados para UTM e affiliate ID. Quando o dono do site fornecer os IDs finais, basta substituir os marcadores pendentes.
                 </p>
             </div>
 
@@ -16,8 +16,13 @@ export default function AffiliateSection() {
                     <a
                         key={partner.name}
                         href={partner.href}
+                        target="_blank"
+                        rel="noreferrer sponsored"
                         className="glass-panel p-5 flex flex-col gap-4 transition-transform duration-300 hover:-translate-y-1"
                     >
+                        <div className={`inline-flex h-12 items-center justify-center rounded-2xl px-4 text-sm font-black tracking-tight ${partner.logoClassName}`}>
+                            {partner.logoText}
+                        </div>
                         <div>
                             <h3 className="text-lg font-bold text-foreground">{partner.name}</h3>
                             <p className="mt-2 text-sm text-foreground/60">{partner.description}</p>

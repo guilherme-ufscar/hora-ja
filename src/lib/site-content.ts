@@ -6,6 +6,8 @@ export interface AffiliatePartner {
     description: string;
     href: string;
     cta: string;
+    logoText: string;
+    logoClassName: string;
 }
 
 export interface CurrencyPageContent {
@@ -148,32 +150,42 @@ export const affiliatePartners: AffiliatePartner[] = [
     {
         name: "Wise",
         description: "Conta internacional e envio de dinheiro com boa transparência de custos e taxa efetiva.",
-        href: "https://wise.com/",
+        href: "https://wise.com/?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=wise-pendente",
         cta: "Ver condições",
+        logoText: "Wise",
+        logoClassName: "bg-emerald-500/10 text-emerald-600",
     },
     {
         name: "Remessa Online",
         description: "Solução popular para remessas internacionais com foco em praticidade no envio a partir do Brasil.",
-        href: "https://www.remessaonline.com.br/",
+        href: "https://www.remessaonline.com.br/?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=remessa-pendente",
         cta: "Comparar remessa",
+        logoText: "RO",
+        logoClassName: "bg-sky-500/10 text-sky-600",
     },
     {
         name: "Nomad",
         description: "Conta global com foco em gastos e investimentos em dólar para quem viaja ou compra no exterior.",
-        href: "https://www.nomadglobal.com/",
+        href: "https://www.nomadglobal.com/?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=nomad-pendente",
         cta: "Conhecer a conta",
+        logoText: "Nomad",
+        logoClassName: "bg-amber-500/10 text-amber-600",
     },
     {
         name: "Banco Inter",
         description: "Alternativa bancária com soluções de câmbio e serviços internacionais dentro de um ecossistema local.",
-        href: "https://www.bancointer.com.br/",
+        href: "https://www.bancointer.com.br/?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=inter-pendente",
         cta: "Ver câmbio",
+        logoText: "Inter",
+        logoClassName: "bg-orange-500/10 text-orange-600",
     },
     {
         name: "Western Union",
         description: "Marca tradicional em transferências internacionais, útil para comparar opções de envio e retirada.",
-        href: "https://www.westernunion.com/br/pt/home.html",
+        href: "https://www.westernunion.com/br/pt/home.html?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=wu-pendente",
         cta: "Ver opções",
+        logoText: "WU",
+        logoClassName: "bg-yellow-500/10 text-yellow-700",
     },
 ];
 
