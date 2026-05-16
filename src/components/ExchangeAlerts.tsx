@@ -7,6 +7,7 @@ import { formatDecimalInput, parseNumericInput } from "@/lib/calculations";
 import { formatCurrency } from "@/lib/formatters";
 
 type AlertDirection = "above" | "below";
+type BrowserPermission = NotificationPermission | "unsupported";
 
 interface ExchangeAlertsProps {
     currencies: Record<string, AppCurrencyData | null>;
@@ -23,15 +24,33 @@ interface BrowserAlert {
 
 const storageKey = "horaja-browser-alerts";
 
+function BellIcon({ className = "h-5 w-5" }: { className?: string }) {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+            <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+            <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .738-1.674C19.41 13.845 18 12.232 18 8A6 6 0 0 0 6 8c0 4.232-1.411 5.845-2.738 7.326" />
+        </svg>
+    );
+}
+
 export default function ExchangeAlerts({ currencies }: ExchangeAlertsProps) {
     const [alerts, setAlerts] = useState<BrowserAlert[]>([]);
     const [currencyCode, setCurrencyCode] = useState<CurrencyCode>("USD");
     const [target, setTarget] = useState("");
     const [direction, setDirection] = useState<AlertDirection>("above");
     const [status, setStatus] = useState<string | null>(null);
+    const [permission, setPermission] = useState<BrowserPermission>("default");
     const hydratedRef = useRef(false);
 
     useEffect(() => {
+        if (!("Notification" in window)) {
+            setPermission("unsupported");
+            hydratedRef.current = true;
+            return;
+        }
+
+        setPermission(Notification.permission);
+
         try {
             const stored = window.localStorage.getItem(storageKey);
             if (stored) {
@@ -54,7 +73,7 @@ export default function ExchangeAlerts({ currencies }: ExchangeAlertsProps) {
     }, [alerts]);
 
     useEffect(() => {
-        if (typeof window === "undefined" || Notification.permission !== "granted") {
+        if (typeof window === "undefined" || permission !== "granted") {
             return;
         }
 
@@ -96,7 +115,7 @@ export default function ExchangeAlerts({ currencies }: ExchangeAlertsProps) {
 
             return nextAlerts;
         });
-    }, [currencies]);
+    }, [currencies, permission]);
 
     const alertCurrencyOptions = useMemo(
         () => currencyDefinitions.filter((currency) => currency.code !== "BRL"),
@@ -105,16 +124,29 @@ export default function ExchangeAlerts({ currencies }: ExchangeAlertsProps) {
 
     async function ensureBrowserPermission() {
         if (!("Notification" in window)) {
+            setPermission("unsupported");
             throw new Error("Seu navegador não suporta alertas locais.");
         }
 
         if (Notification.permission === "granted") {
+            setPermission("granted");
             return;
         }
 
-        const permission = await Notification.requestPermission();
-        if (permission !== "granted") {
+        const nextPermission = await Notification.requestPermission();
+        setPermission(nextPermission);
+
+        if (nextPermission !== "granted") {
             throw new Error("Permissão de notificação negada.");
+        }
+    }
+
+    async function handleEnableNotifications() {
+        try {
+            await ensureBrowserPermission();
+            setStatus("Notificações ativadas neste navegador.");
+        } catch (error) {
+            setStatus(error instanceof Error ? error.message : "Não foi possível ativar as notificações.");
         }
     }
 
@@ -155,14 +187,51 @@ export default function ExchangeAlerts({ currencies }: ExchangeAlertsProps) {
         setStatus("Alerta removido.");
     }
 
+    const permissionLabel = permission === "granted"
+        ? "Notificações ativas"
+        : permission === "denied"
+            ? "Notificações bloqueadas"
+            : permission === "unsupported"
+                ? "Navegador sem suporte"
+                : "Ative notificações";
+
+    const permissionClassName = permission === "granted"
+        ? "bg-emerald-500/10 text-emerald-600"
+        : permission === "denied"
+            ? "bg-rose-500/10 text-rose-600"
+            : "bg-amber-500/10 text-amber-600";
+
     return (
-        <section className="glass-panel p-6 sm:p-8 rounded-[2rem] mt-12">
+        <section className="glass-panel p-6 sm:p-8 rounded-[2rem] mt-12" id="alertas-cotacao">
             <div className="flex flex-col gap-3 mb-6">
-                <span className="text-xs font-bold uppercase tracking-[0.25em] text-primary">Alertas de cotação</span>
-                <h3 className="text-3xl font-black tracking-tight text-foreground">Crie alertas de cotação por moeda, valor e direção</h3>
+                <div className="flex flex-wrap items-center gap-3">
+                    <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.25em] text-primary">
+                        <BellIcon className="h-4 w-4" /> Alertas de cotação
+                    </span>
+                    <span className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] ${permissionClassName}`}>
+                        <BellIcon className="h-4 w-4" /> {permissionLabel}
+                    </span>
+                </div>
+                <h3 className="text-3xl font-black tracking-tight text-foreground">Crie alertas com moeda, valor alvo e direção</h3>
                 <p className="text-foreground/60">
-                    Configure moeda, valor alvo e direção acima/abaixo. Os alertas ficam salvos no localStorage do navegador e o limite é de 3 alertas ativos por usuário neste dispositivo.
+                    Configure moeda, valor alvo e direção acima/abaixo. Os alertas ficam salvos no localStorage do navegador, verificam as cotações carregadas no site e o limite é de 3 alertas ativos por usuário neste dispositivo.
                 </p>
+            </div>
+
+            <div className="rounded-3xl border border-card-border/60 bg-background/60 p-5 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <div className="text-sm font-semibold text-foreground">Ativação de notificações</div>
+                    <p className="mt-1 text-sm text-foreground/60">
+                        Clique no sino para permitir notificações neste navegador antes de criar os alertas.
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    onClick={handleEnableNotifications}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-bold text-background hover:opacity-90 transition-opacity"
+                >
+                    <BellIcon className="h-4 w-4" /> Ativar notificações
+                </button>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr_auto] gap-4">
@@ -210,9 +279,9 @@ export default function ExchangeAlerts({ currencies }: ExchangeAlertsProps) {
                 <button
                     type="button"
                     onClick={handleCreateAlert}
-                    className="rounded-full bg-primary px-6 py-3 text-base font-bold text-white shadow-lg shadow-primary/30 hover:bg-primary-hover transition-colors"
+                    className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-bold text-white shadow-lg shadow-primary/30 hover:bg-primary-hover transition-colors"
                 >
-                    Criar alerta no navegador
+                    <BellIcon className="h-4 w-4" /> Criar alerta no navegador
                 </button>
                 {status && <p className="text-sm text-primary">{status}</p>}
             </div>
@@ -224,8 +293,8 @@ export default function ExchangeAlerts({ currencies }: ExchangeAlertsProps) {
                         <div key={alert.id} className="rounded-3xl border border-card-border/60 bg-background/60 p-5">
                             <div className="flex items-start justify-between gap-4">
                                 <div>
-                                    <div className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                                        {alert.direction === "above" ? "Avisar acima" : "Avisar abaixo"}
+                                    <div className="text-xs font-bold uppercase tracking-[0.2em] text-primary inline-flex items-center gap-2">
+                                        <BellIcon className="h-4 w-4" /> {alert.direction === "above" ? "Avisar acima" : "Avisar abaixo"}
                                     </div>
                                     <div className="mt-2 text-xl font-bold text-foreground">{alert.currencyCode}/BRL</div>
                                     <div className="mt-1 text-sm text-foreground/60">Atual: {quote ? formatCurrency(quote.bid) : "-"}</div>
