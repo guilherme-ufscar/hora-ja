@@ -65,6 +65,8 @@ export interface GlobalMarketSnapshot {
 }
 
 const AWESOME_API_BASE_URL = "https://economia.awesomeapi.com.br";
+const FALLBACK_LATEST_BASE_URL = "https://latest.currency-api.pages.dev/v1/currencies";
+const FALLBACK_HISTORICAL_BASE_URL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api";
 const ALPHA_VANTAGE_BASE_URL = "https://www.alphavantage.co/query";
 const TEN_MINUTES = 600;
 const ONE_DAY = 86400;
@@ -100,6 +102,16 @@ function toIsoDate(value: string): string {
     }
 
     return new Date(value).toISOString().slice(0, 10);
+}
+
+function subtractDays(date: Date, days: number): Date {
+    const copy = new Date(date);
+    copy.setUTCDate(copy.getUTCDate() - days);
+    return copy;
+}
+
+function dateToString(date: Date): string {
+    return date.toISOString().slice(0, 10);
 }
 
 function normalizeQuote(code: CurrencyCode, quote: AwesomeApiQuote): AppCurrencyData {
@@ -164,6 +176,98 @@ async function fetchJson<T>(url: string, revalidate: number, includeAwesomeApiKe
     return response.json() as Promise<T>;
 }
 
+async function fetchFallbackLatestRate(code: CurrencyCode): Promise<number | null> {
+    if (code === "BRL") {
+        return 1;
+    }
+
+    const base = code.toLowerCase();
+
+    try {
+        const data = await fetchJson<Record<string, Record<string, number>>>(
+            `${FALLBACK_LATEST_BASE_URL}/${base}.json`,
+            TEN_MINUTES,
+            false,
+        );
+        const rate = data[base]?.brl;
+        return typeof rate === "number" ? rate : null;
+    } catch {
+        return null;
+    }
+}
+
+async function fetchFallbackHistoricalRate(code: CurrencyCode, date: string): Promise<number | null> {
+    if (code === "BRL") {
+        return 1;
+    }
+
+    const base = code.toLowerCase();
+
+    try {
+        const data = await fetchJson<Record<string, Record<string, number>>>(
+            `${FALLBACK_HISTORICAL_BASE_URL}@${date}/v1/currencies/${base}.json`,
+            ONE_DAY,
+            false,
+        );
+        const rate = data[base]?.brl;
+        return typeof rate === "number" ? rate : null;
+    } catch {
+        return null;
+    }
+}
+
+async function buildFallbackCurrency(code: CurrencyCode): Promise<AppCurrencyData | null> {
+    const definition = currencyMap[code];
+
+    if (code === "BRL") {
+        return {
+            id: "BRL",
+            name: definition.name,
+            symbol: definition.symbol,
+            bid: 1,
+            ask: 1,
+            high: 1,
+            low: 1,
+            pctChange: 0,
+            varBid: 0,
+            createDate: new Date().toISOString(),
+            flag: definition.flag,
+            route: definition.route,
+            isStale: true,
+        };
+    }
+
+    const today = new Date();
+    const yesterday = dateToString(subtractDays(today, 1));
+    const [bid, previousBid] = await Promise.all([
+        fetchFallbackLatestRate(code),
+        fetchFallbackHistoricalRate(code, yesterday),
+    ]);
+
+    if (bid === null) {
+        return null;
+    }
+
+    const varBid = previousBid !== null ? bid - previousBid : 0;
+    const pctChange = previousBid && previousBid > 0 ? (varBid / previousBid) * 100 : 0;
+
+    return {
+        id: code,
+        name: definition.name,
+        symbol: definition.symbol,
+        bid,
+        ask: bid,
+        high: bid,
+        low: bid,
+        pctChange,
+        varBid,
+        createDate: new Date().toISOString(),
+        flag: definition.flag,
+        route: definition.route,
+        isStale: true,
+    };
+}
+
 export async function getCurrencies(): Promise<Record<string, AppCurrencyData | null>> {
     const result = Object.fromEntries(
         supportedCurrencyCodes.map((code) => [code, code === "BRL"
@@ -180,6 +284,7 @@ export async function getCurrencies(): Promise<Record<string, AppCurrencyData | 
                 createDate: new Date().toISOString(),
                 flag: currencyMap.BRL.flag,
                 route: currencyMap.BRL.route,
+                isStale: true,
             }
             : null]),
     ) as Record<string, AppCurrencyData | null>;
@@ -212,7 +317,12 @@ export async function getCurrencies(): Promise<Record<string, AppCurrencyData | 
         return result;
     } catch (error) {
         console.error("Falha ao buscar dados na AwesomeAPI:", error);
-        return result;
+
+        const fallbackEntries = await Promise.all(
+            supportedCurrencyCodes.map(async (code) => [code, await buildFallbackCurrency(code)] as const),
+        );
+
+        return Object.fromEntries(fallbackEntries) as Record<string, AppCurrencyData | null>;
     }
 }
 
@@ -233,7 +343,31 @@ export async function getCurrencyHistory(base: string, days = 5): Promise<Histor
         return [...data].reverse().map(normalizeHistoryPoint);
     } catch (error) {
         console.error(`Falha ao buscar histórico de ${pair}:`, error);
-        return [];
+
+        const today = new Date();
+        const points = await Promise.all(
+            Array.from({ length: days }, async (_, index) => {
+                const date = dateToString(subtractDays(today, days - 1 - index));
+                const bid = await fetchFallbackHistoricalRate(code, date);
+
+                if (bid === null) {
+                    return null;
+                }
+
+                return {
+                    date,
+                    bid,
+                    ask: bid,
+                    high: bid,
+                    low: bid,
+                    pctChange: 0,
+                    varBid: 0,
+                    createDate: `${date} 00:00:00`,
+                } satisfies HistoricalDataPoint;
+            }),
+        );
+
+        return points.filter((point): point is HistoricalDataPoint => point !== null);
     }
 }
 
@@ -254,7 +388,22 @@ export async function getRecentQuotes(base: string, count = 5): Promise<RecentQu
         return [...data].reverse().map(normalizeRecentPoint);
     } catch (error) {
         console.error(`Falha ao buscar cotações recentes de ${pair}:`, error);
-        return [];
+
+        const fallback = await buildFallbackCurrency(code);
+        if (!fallback) {
+            return [];
+        }
+
+        return Array.from({ length: count }, (_, index) => ({
+            bid: fallback.bid,
+            ask: fallback.ask,
+            high: fallback.high,
+            low: fallback.low,
+            pctChange: fallback.pctChange,
+            varBid: fallback.varBid,
+            createDate: new Date(Date.now() - index * 60_000).toISOString(),
+            timestamp: String(Math.floor((Date.now() - index * 60_000) / 1000)),
+        })).reverse();
     }
 }
 
