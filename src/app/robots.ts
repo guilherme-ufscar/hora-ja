@@ -1,14 +1,13 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/metadata";
 
 export default function robots(): MetadataRoute.Robots {
-    const baseUrl = "https://horaja.com.br"; // Domínio oficial Base
-
     return {
         rules: {
             userAgent: "*",
             allow: "/",
-            disallow: "/api/",
+            disallow: ["/api/"],
         },
-        sitemap: `${baseUrl}/sitemap.xml`,
+        sitemap: `${SITE_URL}/sitemap.xml`,
     };
 }

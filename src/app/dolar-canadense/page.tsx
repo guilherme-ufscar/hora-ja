@@ -5,10 +5,10 @@ import { buildCurrencyPageMetadata } from "@/lib/currency-pages";
 export const revalidate = 600;
 
 export async function generateMetadata() {
-    return buildCurrencyPageMetadata("EUR");
+    return buildCurrencyPageMetadata("CAD");
 }
 
-export default async function EuroPage() {
-    const data = await getCurrencyByCode("EUR");
-    return <CurrencyPageTemplate code="EUR" data={data} />;
+export default async function DolarCanadensePage() {
+    const data = await getCurrencyByCode("CAD");
+    return <CurrencyPageTemplate code="CAD" data={data} />;
 }

@@ -1,4 +1,10 @@
-export interface CurrencyConfig {
+import {
+    currencyMap,
+    supportedCurrencyCodes,
+    type CurrencyCode,
+} from "@/lib/currencies";
+
+interface AwesomeApiQuote {
     code: string;
     codein: string;
     name: string;
@@ -12,198 +18,324 @@ export interface CurrencyConfig {
     create_date: string;
 }
 
-export interface AwesomeApiResponse {
-    USDBRL?: CurrencyConfig;
-    EURBRL?: CurrencyConfig;
-    GBPBRL?: CurrencyConfig;
-    [key: string]: CurrencyConfig | undefined;
-}
-
 export interface AppCurrencyData {
-    id: string; // ex: "USD"
-    name: string; // ex: "Dólar Comercial"
-    symbol: string; // ex: "USD/BRL"
-    bid: number; // valor de compra
-    pctChange: number; // variação percentual
-    varBid: number; // variação absoluta
-    createDate: string; // data de atualização
-    isStale?: boolean; // indica se falhou e retornou cache antigo
+    id: string;
+    name: string;
+    symbol: string;
+    bid: number;
+    ask: number;
+    high: number;
+    low: number;
+    pctChange: number;
+    varBid: number;
+    createDate: string;
+    flag: string;
+    route: string;
+    isStale?: boolean;
 }
 
 export interface HistoricalDataPoint {
-    date: string;        // "YYYY-MM-DD"
-    bid: number;         // valor BRL naquele dia
-    pctChange: number;   // variação em relação ao dia anterior
-    varBid: number;      // variação absoluta em relação ao dia anterior
+    date: string;
+    bid: number;
+    ask: number;
+    high: number;
+    low: number;
+    pctChange: number;
+    varBid: number;
+    createDate: string;
 }
 
-/** Formata uma data como string YYYY-MM-DD */
-function dateToString(date: Date): string {
-    return date.toISOString().slice(0, 10);
+export interface RecentQuotePoint {
+    bid: number;
+    ask: number;
+    high: number;
+    low: number;
+    pctChange: number;
+    varBid: number;
+    createDate: string;
+    timestamp: string;
 }
 
-/** Subtrai N dias de uma data */
-function subtractDays(date: Date, days: number): Date {
-    const d = new Date(date);
-    d.setUTCDate(d.getUTCDate() - days);
-    return d;
+export interface GlobalMarketSnapshot {
+    symbol: string;
+    name: string;
+    price: number;
+    changePercent: number;
+    marketState: "open" | "closed";
 }
 
-/** Busca cotação BRL de uma moeda numa data específica (YYYY-MM-DD).
- *  Usa o CDN do fawazahmed0 para datas históricas. */
-async function fetchBrlRate(base: string, dateStr: string): Promise<number | null> {
-    const url = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${dateStr}/v1/currencies/${base}.json`;
-    try {
-        const res = await fetch(url, { next: { revalidate: 86400 } }); // cache por 24h (dado histórico fixo)
-        if (!res.ok) return null;
-        const data = await res.json();
-        const rate = data[base]?.brl;
-        return typeof rate === 'number' ? rate : null;
-    } catch {
-        return null;
-    }
+const AWESOME_API_BASE_URL = "https://economia.awesomeapi.com.br";
+const ALPHA_VANTAGE_BASE_URL = "https://www.alphavantage.co/query";
+const TEN_MINUTES = 600;
+const ONE_DAY = 86400;
+const AWESOME_API_KEY = process.env.AWESOMEAPI_KEY;
+const ALPHA_VANTAGE_API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
+
+function parseNumber(value: string | number | undefined): number {
+    const parsed = typeof value === "number" ? value : Number.parseFloat(value ?? "0");
+    return Number.isFinite(parsed) ? parsed : 0;
 }
 
-/**
- * Busca as cotações de múltiplas moedas na fawazahmed0 API simultaneamente via Server Component.
- * Calcula a variação percentual real comparando com o fechamento do dia anterior.
- * Tempo de revalidação: 600 segundos (10 minutos).
- */
-export async function getCurrencies(): Promise<Record<string, AppCurrencyData | null>> {
-    try {
-        const [usdRes, eurRes, gbpRes] = await Promise.all([
-            fetch('https://latest.currency-api.pages.dev/v1/currencies/usd.json', { next: { revalidate: 600 } }),
-            fetch('https://latest.currency-api.pages.dev/v1/currencies/eur.json', { next: { revalidate: 600 } }),
-            fetch('https://latest.currency-api.pages.dev/v1/currencies/gbp.json', { next: { revalidate: 600 } })
-        ]);
-
-        if (!usdRes.ok || !eurRes.ok || !gbpRes.ok) {
-            throw new Error(`Currency API HTTP error!`);
-        }
-
-        const [usdData, eurData, gbpData] = await Promise.all([
-            usdRes.json(),
-            eurRes.json(),
-            gbpRes.json(),
-        ]);
-
-        // Data de hoje e ontem (para calcular variação real)
-        const today = new Date();
-        const todayStr = dateToString(today);
-        const yesterdayStr = dateToString(subtractDays(today, 1));
-
-        // Busca ontem em paralelo para os três pares
-        const [usdYest, eurYest, gbpYest] = await Promise.all([
-            fetchBrlRate('usd', yesterdayStr),
-            fetchBrlRate('eur', yesterdayStr),
-            fetchBrlRate('gbp', yesterdayStr),
-        ]);
-
-        const now = usdData.date || todayStr;
-
-        const formatData = (
-            baseCode: string,
-            brlToday: number,
-            brlYesterday: number | null,
-            name: string
-        ): AppCurrencyData => {
-            let pctChange = 0;
-            let varBid = 0;
-
-            if (brlYesterday && brlYesterday > 0) {
-                varBid = brlToday - brlYesterday;
-                pctChange = (varBid / brlYesterday) * 100;
-            }
-
-            return {
-                id: baseCode,
-                name,
-                symbol: `${baseCode}/BRL`,
-                bid: brlToday,
-                pctChange: parseFloat(pctChange.toFixed(4)),
-                varBid: parseFloat(varBid.toFixed(4)),
-                createDate: now,
-            };
-        };
-
-        return {
-            USD: formatData("USD", usdData.usd.brl, usdYest, "Dólar Comercial"),
-            EUR: formatData("EUR", eurData.eur.brl, eurYest, "Euro"),
-            GBP: formatData("GBP", gbpData.gbp.brl, gbpYest, "Libra Esterlina"),
-        };
-    } catch (error) {
-        console.error("Falha ao buscar dados na Currency API:", error);
-
-        return {
-            USD: null,
-            EUR: null,
-            GBP: null,
-        };
-    }
-}
-
-/**
- * Busca o histórico de cotação BRL dos últimos `days` dias para uma moeda.
- * Retorna os pontos do mais antigo ao mais recente, com variação calculada entre dias consecutivos.
- */
-export async function getCurrencyHistory(
-    base: string,
-    days: number = 5
-): Promise<HistoricalDataPoint[]> {
-    const today = new Date();
-
-    // Gera as datas: hoje + `days` dias anteriores (para ter `days` variações)
-    const dates: string[] = [];
-    for (let i = days; i >= 0; i--) {
-        dates.push(dateToString(subtractDays(today, i)));
+function withApiKey(init?: RequestInit): RequestInit {
+    if (!AWESOME_API_KEY) {
+        return init ?? {};
     }
 
-    // Busca todas as datas em paralelo
-    const rates = await Promise.all(
-        dates.map(async (dateStr) => {
-            // Hoje usa o endpoint "latest" para maior frescor; passado usa CDN fixo
-            if (dateStr === dateToString(today)) {
-                const url = `https://latest.currency-api.pages.dev/v1/currencies/${base}.json`;
-                try {
-                    const res = await fetch(url, { next: { revalidate: 600 } });
-                    if (!res.ok) return { date: dateStr, bid: null };
-                    const data = await res.json();
-                    const bid = data[base]?.brl;
-                    return { date: dateStr, bid: typeof bid === 'number' ? bid : null };
-                } catch {
-                    return { date: dateStr, bid: null };
-                }
-            } else {
-                const bid = await fetchBrlRate(base, dateStr);
-                return { date: dateStr, bid };
-            }
-        })
+    return {
+        ...init,
+        headers: {
+            ...(init?.headers ?? {}),
+            "x-api-key": AWESOME_API_KEY,
+        },
+    };
+}
+
+function getCurrencyKeyFromPair(pair: string): string {
+    return pair.replace("-", "").toUpperCase();
+}
+
+function toIsoDate(value: string): string {
+    if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
+        return value.slice(0, 10);
+    }
+
+    return new Date(value).toISOString().slice(0, 10);
+}
+
+function normalizeQuote(code: CurrencyCode, quote: AwesomeApiQuote): AppCurrencyData {
+    const definition = currencyMap[code];
+
+    return {
+        id: code,
+        name: definition.name,
+        symbol: definition.symbol,
+        bid: parseNumber(quote.bid),
+        ask: parseNumber(quote.ask),
+        high: parseNumber(quote.high),
+        low: parseNumber(quote.low),
+        pctChange: parseNumber(quote.pctChange),
+        varBid: parseNumber(quote.varBid),
+        createDate: quote.create_date,
+        flag: definition.flag,
+        route: definition.route,
+    };
+}
+
+function normalizeHistoryPoint(quote: AwesomeApiQuote): HistoricalDataPoint {
+    return {
+        date: toIsoDate(quote.create_date),
+        bid: parseNumber(quote.bid),
+        ask: parseNumber(quote.ask),
+        high: parseNumber(quote.high),
+        low: parseNumber(quote.low),
+        pctChange: parseNumber(quote.pctChange),
+        varBid: parseNumber(quote.varBid),
+        createDate: quote.create_date,
+    };
+}
+
+function normalizeRecentPoint(quote: AwesomeApiQuote): RecentQuotePoint {
+    return {
+        bid: parseNumber(quote.bid),
+        ask: parseNumber(quote.ask),
+        high: parseNumber(quote.high),
+        low: parseNumber(quote.low),
+        pctChange: parseNumber(quote.pctChange),
+        varBid: parseNumber(quote.varBid),
+        createDate: quote.create_date,
+        timestamp: quote.timestamp,
+    };
+}
+
+async function fetchJson<T>(url: string, revalidate: number, includeAwesomeApiKey = true): Promise<T> {
+    const requestInit = {
+        next: { revalidate },
+    } satisfies RequestInit;
+
+    const response = await fetch(
+        url,
+        includeAwesomeApiKey ? withApiKey(requestInit) : requestInit,
     );
 
-    // Converte para HistoricalDataPoint (calcula variação entre dias consecutivos)
-    const points: HistoricalDataPoint[] = [];
-
-    for (let i = 1; i < rates.length; i++) {
-        const prev = rates[i - 1];
-        const curr = rates[i];
-
-        if (curr.bid === null) continue;
-
-        let pctChange = 0;
-        let varBid = 0;
-
-        if (prev.bid !== null && prev.bid > 0) {
-            varBid = curr.bid - prev.bid;
-            pctChange = (varBid / prev.bid) * 100;
-        }
-
-        points.push({
-            date: curr.date,
-            bid: curr.bid,
-            pctChange: parseFloat(pctChange.toFixed(4)),
-            varBid: parseFloat(varBid.toFixed(4)),
-        });
+    if (!response.ok) {
+        throw new Error(`AwesomeAPI request failed: ${response.status}`);
     }
 
-    return points;
+    return response.json() as Promise<T>;
+}
+
+export async function getCurrencies(): Promise<Record<string, AppCurrencyData | null>> {
+    const result = Object.fromEntries(
+        supportedCurrencyCodes.map((code) => [code, code === "BRL"
+            ? {
+                id: "BRL",
+                name: currencyMap.BRL.name,
+                symbol: currencyMap.BRL.symbol,
+                bid: 1,
+                ask: 1,
+                high: 1,
+                low: 1,
+                pctChange: 0,
+                varBid: 0,
+                createDate: new Date().toISOString(),
+                flag: currencyMap.BRL.flag,
+                route: currencyMap.BRL.route,
+            }
+            : null]),
+    ) as Record<string, AppCurrencyData | null>;
+
+    const pairs = supportedCurrencyCodes
+        .filter((code) => code !== "BRL")
+        .map((code) => currencyMap[code].pair)
+        .join(",");
+
+    try {
+        const data = await fetchJson<Record<string, AwesomeApiQuote>>(
+            `${AWESOME_API_BASE_URL}/json/last/${pairs}`,
+            TEN_MINUTES,
+        );
+
+        for (const code of supportedCurrencyCodes) {
+            if (code === "BRL") {
+                continue;
+            }
+
+            const pair = currencyMap[code].pair;
+            if (!pair) {
+                continue;
+            }
+
+            const quote = data[getCurrencyKeyFromPair(pair)];
+            result[code] = quote ? normalizeQuote(code, quote) : null;
+        }
+
+        return result;
+    } catch (error) {
+        console.error("Falha ao buscar dados na AwesomeAPI:", error);
+        return result;
+    }
+}
+
+export async function getCurrencyHistory(base: string, days = 5): Promise<HistoricalDataPoint[]> {
+    const code = base.toUpperCase() as CurrencyCode;
+    const pair = currencyMap[code]?.pair;
+
+    if (!pair) {
+        return [];
+    }
+
+    try {
+        const data = await fetchJson<AwesomeApiQuote[]>(
+            `${AWESOME_API_BASE_URL}/json/daily/${pair}/${Math.min(days, 360)}`,
+            TEN_MINUTES,
+        );
+
+        return [...data].reverse().map(normalizeHistoryPoint);
+    } catch (error) {
+        console.error(`Falha ao buscar histórico de ${pair}:`, error);
+        return [];
+    }
+}
+
+export async function getRecentQuotes(base: string, count = 5): Promise<RecentQuotePoint[]> {
+    const code = base.toUpperCase() as CurrencyCode;
+    const pair = currencyMap[code]?.pair;
+
+    if (!pair) {
+        return [];
+    }
+
+    try {
+        const data = await fetchJson<AwesomeApiQuote[]>(
+            `${AWESOME_API_BASE_URL}/${pair}/${Math.min(count, 100)}`,
+            TEN_MINUTES,
+        );
+
+        return [...data].reverse().map(normalizeRecentPoint);
+    } catch (error) {
+        console.error(`Falha ao buscar cotações recentes de ${pair}:`, error);
+        return [];
+    }
+}
+
+export async function getFeaturedCurrencies() {
+    const currencies = await getCurrencies();
+
+    return {
+        USD: currencies.USD,
+        EUR: currencies.EUR,
+        GBP: currencies.GBP,
+    };
+}
+
+export async function getCurrencyByCode(code: CurrencyCode) {
+    const currencies = await getCurrencies();
+    return currencies[code] ?? null;
+}
+
+export async function getAvailableCurrencyPairs() {
+    try {
+        return fetchJson<Record<string, string>>(
+            `${AWESOME_API_BASE_URL}/json/available/uniq`,
+            ONE_DAY,
+        );
+    } catch (error) {
+        console.error("Falha ao buscar pares disponíveis na AwesomeAPI:", error);
+        return {};
+    }
+}
+
+const globalMarketConfig = [
+    { symbol: "^BVSP", name: "Ibovespa" },
+    { symbol: "SPY", name: "S&P 500" },
+    { symbol: "QQQ", name: "Nasdaq" },
+    { symbol: "GLD", name: "Ouro" },
+    { symbol: "BTCUSD", name: "Bitcoin" },
+] as const;
+
+function inferMarketState(): "open" | "closed" {
+    const now = new Date();
+    const saoPauloHour = Number(
+        new Intl.DateTimeFormat("en-GB", {
+            timeZone: "America/Sao_Paulo",
+            hour: "2-digit",
+            hour12: false,
+        }).format(now),
+    );
+
+    return saoPauloHour >= 10 && saoPauloHour < 18 ? "open" : "closed";
+}
+
+export async function getGlobalMarketSnapshots(): Promise<GlobalMarketSnapshot[]> {
+    if (!ALPHA_VANTAGE_API_KEY) {
+        return [];
+    }
+
+    const marketState = inferMarketState();
+
+    const snapshots = await Promise.all(
+        globalMarketConfig.map(async (market) => {
+            try {
+                const url = `${ALPHA_VANTAGE_BASE_URL}?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(market.symbol)}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+                const data = await fetchJson<{ "Global Quote"?: Record<string, string> }>(url, TEN_MINUTES, false);
+                const quote = data["Global Quote"];
+
+                if (!quote) {
+                    return null;
+                }
+
+                return {
+                    symbol: market.symbol,
+                    name: market.name,
+                    price: parseNumber(quote["05. price"]),
+                    changePercent: parseNumber((quote["10. change percent"] ?? "0").replace("%", "")),
+                    marketState,
+                } satisfies GlobalMarketSnapshot;
+            } catch {
+                return null;
+            }
+        }),
+    );
+
+    return snapshots.filter((snapshot): snapshot is GlobalMarketSnapshot => snapshot !== null);
 }
