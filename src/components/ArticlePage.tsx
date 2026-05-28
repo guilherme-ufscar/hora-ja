@@ -22,7 +22,7 @@ export default function ArticlePage({ title, description, sections }: ArticlePag
 
             <div className="glass-panel p-8 sm:p-10 flex flex-col gap-10">
                 {sections.map((section) => (
-                    <section key={section.title} className="prose prose-slate dark:prose-invert max-w-none">
+                    <section key={section.title} className="flex flex-col gap-3 text-foreground/80 leading-relaxed">
                         <h2>{section.title}</h2>
                         {section.paragraphs.map((paragraph) => (
                             <p key={paragraph}>{paragraph}</p>
