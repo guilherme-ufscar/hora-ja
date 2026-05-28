@@ -52,7 +52,8 @@ export default function AdminPage() {
 
     // pipeline state
     const [pipelineRunning, setPipelineRunning] = useState(false);
-    const [pipelineResult, setPipelineResult] = useState<string>("");
+    const [pipelineProgress, setPipelineProgress] = useState<{ index: number; total: number; log: { title: string; status: "ok" | "error" | "skip" }[] } | null>(null);
+    const [pipelineDone, setPipelineDone] = useState<{ processed: number; skipped: number; errors: number } | null>(null);
 
     const fetchArticles = useCallback(async () => {
         setLoading(true);
@@ -135,15 +136,39 @@ export default function AdminPage() {
         setTimeout(() => setConfigSaved(false), 2000);
     }
 
-    async function runPipeline() {
+    function runPipeline() {
         setPipelineRunning(true);
-        setPipelineResult("");
-        const res = await fetch("/api/admin/pipeline", { method: "POST" });
-        const data = await res.json();
-        if (data.ok) setPipelineResult(`✓ Publicadas: ${data.processed} | Já existentes: ${data.skipped} | Erros: ${data.errors}`);
-        else setPipelineResult(`Erro: ${data.error}`);
-        setPipelineRunning(false);
-        if (tab === "articles") fetchArticles();
+        setPipelineProgress(null);
+        setPipelineDone(null);
+
+        const es = new EventSource("/api/admin/pipeline/stream");
+
+        es.onmessage = (e) => {
+            const event = JSON.parse(e.data);
+            if (event.type === "start") {
+                setPipelineProgress({ index: 0, total: event.total, log: [] });
+            } else if (event.type === "progress") {
+                setPipelineProgress(prev => ({
+                    index: event.index,
+                    total: event.total,
+                    log: [...(prev?.log ?? []), { title: event.title, status: event.status }],
+                }));
+            } else if (event.type === "done") {
+                setPipelineDone({ processed: event.processed, skipped: event.skipped, errors: event.errors });
+                setPipelineRunning(false);
+                es.close();
+                fetchArticles();
+            } else if (event.type === "error") {
+                setPipelineDone({ processed: 0, skipped: 0, errors: 1 });
+                setPipelineRunning(false);
+                es.close();
+            }
+        };
+
+        es.onerror = () => {
+            setPipelineRunning(false);
+            es.close();
+        };
     }
 
     // Login screen
@@ -309,19 +334,50 @@ export default function AdminPage() {
                 <div className="flex flex-col gap-6 max-w-2xl">
                     <div className="glass-panel p-8 flex flex-col gap-6">
                         <div>
-                            <h2 className="text-xl font-black text-foreground mb-1">Executar Pipeline Agora</h2>
-                            <p className="text-sm text-foreground/50">Busca notícias nos RSS feeds, reescreve com Claude e publica automaticamente até atingir o limite diário configurado.</p>
+                            <h2 className="text-xl font-black text-foreground mb-1">Executar Pipeline</h2>
+                            <p className="text-sm text-foreground/50">Busca até <strong>10 notícias</strong> financeiras nos feeds RSS, reescreve com Claude e publica. Limite diário: 30 notícias.</p>
                         </div>
+
                         <button
                             onClick={runPipeline}
                             disabled={pipelineRunning}
                             className="self-start px-8 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-hover disabled:opacity-50 transition-colors"
                         >
-                            {pipelineRunning ? "Processando... (aguarde)" : "Executar Pipeline"}
+                            {pipelineRunning ? "Processando..." : "Executar Agora"}
                         </button>
-                        {pipelineResult && (
-                            <div className={`rounded-xl px-5 py-4 text-sm font-medium ${pipelineResult.startsWith("✓") ? "bg-emerald-500/10 text-emerald-600" : "bg-red-500/10 text-red-500"}`}>
-                                {pipelineResult}
+
+                        {pipelineProgress && (
+                            <div className="flex flex-col gap-3">
+                                <div className="flex items-center justify-between text-sm">
+                                    <span className="text-foreground/60 font-medium">
+                                        {pipelineRunning ? `Processando ${pipelineProgress.index} de ${pipelineProgress.total}...` : "Concluído"}
+                                    </span>
+                                    <span className="text-foreground/40 text-xs">
+                                        {pipelineProgress.total > 0 ? Math.round((pipelineProgress.index / pipelineProgress.total) * 100) : 0}%
+                                    </span>
+                                </div>
+                                <div className="w-full h-3 rounded-full bg-card-bg border border-card-border overflow-hidden">
+                                    <div
+                                        className="h-full bg-primary rounded-full transition-all duration-500"
+                                        style={{ width: pipelineProgress.total > 0 ? `${(pipelineProgress.index / pipelineProgress.total) * 100}%` : "0%" }}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-1 max-h-48 overflow-y-auto">
+                                    {pipelineProgress.log.map((entry, i) => (
+                                        <div key={i} className="flex items-start gap-2 text-xs">
+                                            <span className={entry.status === "ok" ? "text-emerald-500 shrink-0" : "text-red-500 shrink-0"}>
+                                                {entry.status === "ok" ? "✓" : "✗"}
+                                            </span>
+                                            <span className="text-foreground/60 line-clamp-1">{entry.title}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {pipelineDone && (
+                            <div className="rounded-xl px-5 py-4 bg-emerald-500/10 text-emerald-600 text-sm font-medium">
+                                ✓ Publicadas: <strong>{pipelineDone.processed}</strong> &nbsp;·&nbsp; Erros: {pipelineDone.errors}
                             </div>
                         )}
                     </div>
@@ -330,7 +386,7 @@ export default function AdminPage() {
                         <h3 className="text-lg font-bold text-foreground mb-3">Cron Automático (aaPanel)</h3>
                         <p className="text-sm text-foreground/60 mb-3">Configure no aaPanel um cron job com este comando para rodar o pipeline automaticamente 3× ao dia:</p>
                         <code className="block bg-card-bg border border-card-border rounded-xl p-4 text-xs text-foreground/80 font-mono break-all">
-                            {`curl -s -X POST "https://seusite.com/api/news/run?secret=${process.env.PIPELINE_SECRET || "horaja_pipeline_2026"}" || true`}
+                            {`curl -s -X POST "https://seusite.com/api/news/run?secret=horaja_pipeline_2026" || true`}
                         </code>
                         <p className="text-xs text-foreground/40 mt-2">Sugestão de horários: 07:00, 13:00 e 19:00 (horário de Brasília)</p>
                     </div>
