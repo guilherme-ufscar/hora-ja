@@ -22,7 +22,7 @@ interface ChartDataset {
     color?: string;
 }
 
-interface ChartSpec {
+export interface ChartSpec {
     type: "line" | "bar";
     title: string;
     labels: string[];

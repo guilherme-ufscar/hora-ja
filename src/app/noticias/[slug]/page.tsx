@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import pool, { runMigrations } from "@/lib/db";
-import ArticleChart from "@/components/ArticleChart";
+import dynamic from "next/dynamic";
 import type { Metadata } from "next";
+import type { ChartSpec } from "@/components/ArticleChart";
+
+const ArticleChart = dynamic(() => import("@/components/ArticleChart"), { ssr: false });
 
 export const revalidate = 600;
 
@@ -99,7 +102,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                             return (
                                 <div key={i}>
                                     <p dangerouslySetInnerHTML={{ __html: part.replace(/^<p>|<\/p>$/g, "") }} />
-                                    <ArticleChart chart={charts[0] as Parameters<typeof ArticleChart>[0]["chart"]} />
+                                    <ArticleChart chart={charts[0] as ChartSpec} />
                                 </div>
                             );
                         }
@@ -108,7 +111,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 </div>
 
                 {charts.slice(1).map((chart, i) => (
-                    <ArticleChart key={i} chart={chart as Parameters<typeof ArticleChart>[0]["chart"]} />
+                    <ArticleChart key={i} chart={chart as ChartSpec} />
                 ))}
             </div>
 
