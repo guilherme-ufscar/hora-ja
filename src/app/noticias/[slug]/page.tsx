@@ -90,7 +90,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </div>
 
             <div className="glass-panel p-8 sm:p-10">
-                <div className="prose prose-slate dark:prose-invert max-w-none">
+                <div className="flex flex-col gap-4 text-foreground/80 leading-relaxed text-[1.05rem] [&_p]:mb-0 [&_strong]:text-foreground [&_strong]:font-bold [&_a]:text-primary [&_a]:underline [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6">
                     {contentParts.map((part, i) => {
                         if (!part.startsWith("<p>")) {
                             return <span key={i} dangerouslySetInnerHTML={{ __html: part }} />;
