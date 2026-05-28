@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const navItems = [
     { href: "/", label: "Home" },
+    { href: "/noticias", label: "Análises" },
     { href: "/dolar", label: "Dólar" },
     { href: "/euro", label: "Euro" },
     { href: "/libra", label: "Libra" },

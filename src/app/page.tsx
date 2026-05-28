@@ -6,9 +6,12 @@ import AdSlot from "@/components/AdSlot";
 import GlobalMarketsPanel from "@/components/GlobalMarketsPanel";
 import MarketClockGrid from "@/components/MarketClockGrid";
 import CurrencyQuickLinks from "@/components/CurrencyQuickLinks";
+import NewsCard from "@/components/NewsCard";
+import Link from "next/link";
 import { getFeaturedCurrencies } from "@/lib/api";
 import { homepageFaq } from "@/lib/site-content";
 import { buildStaticMetadata } from "@/lib/metadata";
+import pool from "@/lib/db";
 
 export const revalidate = 600;
 
@@ -18,8 +21,21 @@ export const metadata = buildStaticMetadata(
     "Acompanhe cotações, compare IOF, veja histórico cambial e consulte relógios de mercados mundiais em um só lugar.",
 );
 
+async function getLatestNews() {
+    try {
+        const res = await pool.query(
+            `SELECT slug, title, summary, category, source_name, published_at
+             FROM articles WHERE status = 'published'
+             ORDER BY published_at DESC LIMIT 3`
+        );
+        return res.rows;
+    } catch {
+        return [];
+    }
+}
+
 export default async function Home() {
-    const currencies = await getFeaturedCurrencies();
+    const [currencies, latestNews] = await Promise.all([getFeaturedCurrencies(), getLatestNews()]);
 
     return (
         <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
@@ -58,6 +74,25 @@ export default async function Home() {
                 <CurrencyQuickLinks />
                 <GlobalMarketsPanel />
                 <MarketClockGrid />
+
+                {latestNews.length > 0 && (
+                    <section className="flex flex-col gap-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <span className="text-xs font-bold uppercase tracking-[0.25em] text-primary">Análises e Mercado</span>
+                                <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground">Últimas análises financeiras</h2>
+                            </div>
+                            <Link href="/noticias" className="text-sm font-semibold text-primary hover:text-primary-hover transition-colors">
+                                Ver todas →
+                            </Link>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {latestNews.map((a: { slug: string; title: string; summary: string; category: string; source_name: string; published_at: string }) => (
+                                <NewsCard key={a.slug} {...a} />
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 <section className="mt-8 mb-8">
                     <div className="text-center mb-10">

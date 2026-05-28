@@ -150,7 +150,7 @@ export const affiliatePartners: AffiliatePartner[] = [
     {
         name: "Wise",
         description: "Conta internacional e envio de dinheiro com boa transparência de custos e taxa efetiva.",
-        href: "https://wise.com/?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=wise-pendente",
+        href: "https://wise.com/invite/mic/diegosilasg",
         cta: "Ver condições",
         logoText: "Wise",
         logoClassName: "bg-emerald-500/10 text-emerald-600",
@@ -158,7 +158,7 @@ export const affiliatePartners: AffiliatePartner[] = [
     {
         name: "Remessa Online",
         description: "Solução popular para remessas internacionais com foco em praticidade no envio a partir do Brasil.",
-        href: "https://www.remessaonline.com.br/?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=remessa-pendente",
+        href: "https://remessaonline.com.br?utm_voucher=dg0608&utm_medium=mgm-share",
         cta: "Comparar remessa",
         logoText: "RO",
         logoClassName: "bg-sky-500/10 text-sky-600",
@@ -166,7 +166,7 @@ export const affiliatePartners: AffiliatePartner[] = [
     {
         name: "Nomad",
         description: "Conta global com foco em gastos e investimentos em dólar para quem viaja ou compra no exterior.",
-        href: "https://www.nomadglobal.com/?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=nomad-pendente",
+        href: "https://nomad.onelink.me/wIQT/Account?code=9T7WDPPU37&n=Diego",
         cta: "Conhecer a conta",
         logoText: "Nomad",
         logoClassName: "bg-amber-500/10 text-amber-600",
@@ -174,7 +174,7 @@ export const affiliatePartners: AffiliatePartner[] = [
     {
         name: "Banco Inter",
         description: "Alternativa bancária com soluções de câmbio e serviços internacionais dentro de um ecossistema local.",
-        href: "https://www.bancointer.com.br/?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=inter-pendente",
+        href: "https://inter-co.onelink.me/Qyu7/ste2n6tb",
         cta: "Ver câmbio",
         logoText: "Inter",
         logoClassName: "bg-orange-500/10 text-orange-600",
@@ -182,7 +182,7 @@ export const affiliatePartners: AffiliatePartner[] = [
     {
         name: "Western Union",
         description: "Marca tradicional em transferências internacionais, útil para comparar opções de envio e retirada.",
-        href: "https://www.westernunion.com/br/pt/home.html?utm_source=horaja&utm_medium=affiliate&utm_campaign=onde_comprar_cambio&affiliate_id=wu-pendente",
+        href: "https://ssqt.co/mQTW7gU",
         cta: "Ver opções",
         logoText: "WU",
         logoClassName: "bg-yellow-500/10 text-yellow-700",
