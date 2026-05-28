@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
 import pool, { runMigrations } from "@/lib/db";
-import dynamic from "next/dynamic";
+import ArticleCharts from "@/components/ArticleCharts";
 import type { Metadata } from "next";
 import type { ChartSpec } from "@/components/ArticleChart";
-
-const ArticleChart = dynamic(() => import("@/components/ArticleChart"), { ssr: false });
 
 export const revalidate = 600;
 
@@ -14,7 +12,7 @@ interface Article {
     title: string;
     summary: string;
     content: string;
-    chart_data: object[] | null;
+    chart_data: ChartSpec[] | null;
     source_url: string;
     source_name: string;
     category: string;
@@ -58,16 +56,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     const article = await getArticle(slug);
     if (!article) notFound();
 
-    const charts = Array.isArray(article.chart_data) ? article.chart_data : [];
+    const charts: ChartSpec[] = Array.isArray(article.chart_data) ? article.chart_data : [];
     const date = new Date(article.published_at).toLocaleDateString("pt-BR", {
         day: "2-digit", month: "long", year: "numeric"
     });
 
     const contentParts = article.content.split(/(<p>[\s\S]*?<\/p>)/g).filter(Boolean);
-    const midpoint = Math.floor(contentParts.filter(p => p.startsWith("<p>")).length / 2);
+    const pCount = contentParts.filter(p => p.startsWith("<p>")).length;
+    const midpoint = Math.floor(pCount / 2);
 
     let paragraphCount = 0;
-    let chartInserted = false;
+    let midChart: ChartSpec | null = charts[0] ?? null;
+    let midChartInserted = false;
 
     return (
         <div className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 py-12">
@@ -96,13 +96,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                             return <span key={i} dangerouslySetInnerHTML={{ __html: part }} />;
                         }
                         paragraphCount++;
-                        const isInsertPoint = paragraphCount === midpoint && !chartInserted && charts.length > 0;
-                        if (isInsertPoint) {
-                            chartInserted = true;
+                        if (paragraphCount === midpoint && midChart && !midChartInserted) {
+                            midChartInserted = true;
                             return (
                                 <div key={i}>
                                     <p dangerouslySetInnerHTML={{ __html: part.replace(/^<p>|<\/p>$/g, "") }} />
-                                    <ArticleChart chart={charts[0] as ChartSpec} />
+                                    <ArticleCharts charts={[midChart]} />
                                 </div>
                             );
                         }
@@ -110,9 +109,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     })}
                 </div>
 
-                {charts.slice(1).map((chart, i) => (
-                    <ArticleChart key={i} chart={chart as ChartSpec} />
-                ))}
+                {charts.length > 1 && <ArticleCharts charts={charts.slice(1)} />}
             </div>
 
             {article.source_url && (
