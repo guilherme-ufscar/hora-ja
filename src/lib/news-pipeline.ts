@@ -25,6 +25,25 @@ function slugify(text: string): string {
         + "-" + Date.now().toString(36);
 }
 
+const FINANCE_KEYWORDS = [
+    "invest", "ação", "ações", "bolsa", "b3", "ibovespa", "dividendo",
+    "câmbio", "dólar", "euro", "libra", "moeda", "cotação",
+    "juros", "selic", "ipca", "inflação", "pib", "recessão",
+    "banco", "crédito", "financ", "econom", "mercado", "fundo",
+    "renda fixa", "tesouro", "cdb", "lci", "lca", "debenture",
+    "cripto", "bitcoin", "ethereum", "blockchain",
+    "imposto", "iof", "receita federal", "fiscal",
+    "exportação", "importação", "comércio exterior",
+    "petróleo", "commodity", "commodities", "agro",
+    "fed", "banco central", "bcb", "copom",
+    "remessa", "transferência internacional",
+];
+
+function isFinanceRelated(title: string, content: string): boolean {
+    const text = (title + " " + content).toLowerCase();
+    return FINANCE_KEYWORDS.some(kw => text.includes(kw));
+}
+
 async function fetchRSSItems(sourceKeys: string[], limit: number) {
     const items: { title: string; link: string; content: string; sourceName: string }[] = [];
 
@@ -33,15 +52,11 @@ async function fetchRSSItems(sourceKeys: string[], limit: number) {
         if (!feed) continue;
         try {
             const result = await parser.parseURL(feed.url);
-            for (const item of result.items.slice(0, Math.ceil(limit / sourceKeys.length) + 2)) {
-                if (item.title && item.link) {
-                    items.push({
-                        title: item.title,
-                        link: item.link,
-                        content: item.contentSnippet || item.content || item.summary || "",
-                        sourceName: feed.name,
-                    });
-                }
+            for (const item of result.items.slice(0, 40)) {
+                if (!item.title || !item.link) continue;
+                const content = item.contentSnippet || item.content || item.summary || "";
+                if (!isFinanceRelated(item.title, content)) continue;
+                items.push({ title: item.title, link: item.link, content, sourceName: feed.name });
             }
         } catch {
             // feed unavailable, skip
