@@ -138,38 +138,55 @@ async function getConfig() {
     return config;
 }
 
-export async function runNewsPipeline(): Promise<{ processed: number; skipped: number; errors: number }> {
+export type PipelineEvent =
+    | { type: "start"; total: number }
+    | { type: "progress"; index: number; total: number; title: string; status: "ok" | "skip" | "error" }
+    | { type: "done"; processed: number; skipped: number; errors: number };
+
+export async function runNewsPipeline(
+    onEvent?: (e: PipelineEvent) => void
+): Promise<{ processed: number; skipped: number; errors: number }> {
     const config = await getConfig();
     if (config.pipeline_enabled !== "true") return { processed: 0, skipped: 0, errors: 0 };
 
-    const limit = parseInt(config.articles_per_day || "15", 10);
+    const dailyLimit = parseInt(config.articles_per_day || "30", 10);
+    const perRunLimit = 10;
+
     const todayCount = await countTodayArticles();
-    const remaining = limit - todayCount;
+    const remaining = Math.min(perRunLimit, dailyLimit - todayCount);
     if (remaining <= 0) return { processed: 0, skipped: 0, errors: 0 };
 
     const sourceKeys = (config.rss_sources || "infomoney,g1economia,exame").split(",").map(s => s.trim());
-    const items = await fetchRSSItems(sourceKeys, remaining + 5);
+    const items = await fetchRSSItems(sourceKeys, remaining + 10);
+
+    const candidates = [];
+    for (const item of items) {
+        if (candidates.length >= remaining) break;
+        if (!await articleExists(item.link)) candidates.push(item);
+    }
+
+    onEvent?.({ type: "start", total: candidates.length });
 
     let processed = 0, skipped = 0, errors = 0;
 
-    for (const item of items) {
-        if (processed >= remaining) break;
-        if (await articleExists(item.link)) { skipped++; continue; }
-
+    for (let i = 0; i < candidates.length; i++) {
+        const item = candidates[i];
         try {
             const result = await rewriteWithClaude(item);
             const slug = slugify(result.title);
-
             await pool.query(
                 `INSERT INTO articles (slug, title, summary, content, chart_data, source_url, source_name, category, status, published_at)
-                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'published', NOW())`,
+                 VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'published',NOW())`,
                 [slug, result.title, result.summary, result.content, JSON.stringify(result.charts), item.link, item.sourceName, result.category]
             );
             processed++;
+            onEvent?.({ type: "progress", index: i + 1, total: candidates.length, title: result.title, status: "ok" });
         } catch {
             errors++;
+            onEvent?.({ type: "progress", index: i + 1, total: candidates.length, title: item.title, status: "error" });
         }
     }
 
+    onEvent?.({ type: "done", processed, skipped, errors });
     return { processed, skipped, errors };
 }
