@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import { SITE_URL } from "@/lib/metadata";
@@ -39,7 +40,13 @@ export default function RootLayout({
         className={`${inter.variable} font-sans bg-background text-foreground min-h-[100dvh] selection:bg-emerald-500 selection:text-white`}
       >
         <div className="relative flex min-h-[100dvh] flex-col">
-          <Header />
+          <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3621297766213698"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+        <Header />
           <main className="flex-1 flex flex-col">{children}</main>
         </div>
       </body>
