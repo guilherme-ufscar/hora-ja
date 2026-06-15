@@ -2,11 +2,19 @@ services:
   app:
     build: .
     ports:
-      - "10002:3000"   # apenas esta porta é exposta externamente
-    env_file: .env
+      - "10002:3000"
     environment:
-      # Sobrescreve DATABASE_HOST do .env para apontar ao serviço interno
       DATABASE_HOST: db
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_NAME: ${DATABASE_NAME:-horaja}
+      DATABASE_USER: ${DATABASE_USER:-horaja}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      ALPHA_VANTAGE_API_KEY: ${ALPHA_VANTAGE_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      ADMIN_SECRET: ${ADMIN_SECRET}
+      PIPELINE_SECRET: ${PIPELINE_SECRET}
+      AWESOMEAPI_KEY: ${AWESOMEAPI_KEY:-}
     depends_on:
       db:
         condition: service_healthy
