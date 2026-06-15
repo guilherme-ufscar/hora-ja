@@ -1,0 +1,39 @@
+services:
+  app:
+    build: .
+    ports:
+      - "10002:3000"   # apenas esta porta é exposta externamente
+    env_file: .env
+    environment:
+      # Sobrescreve DATABASE_HOST do .env para apontar ao serviço interno
+      DATABASE_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - internal
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-horaja}
+      POSTGRES_USER: ${DATABASE_USER:-horaja}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-horaja} -d ${DATABASE_NAME:-horaja}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - internal
+
+volumes:
+  postgres_data:
+
+networks:
+  internal:
+    driver: bridge

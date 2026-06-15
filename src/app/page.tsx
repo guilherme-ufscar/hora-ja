@@ -1,5 +1,5 @@
 import Clock from "@/components/Clock";
-import CurrencyCard from "@/components/CurrencyCard";
+import LiveCurrencyCards from "@/components/LiveCurrencyCards";
 import FAQ from "@/components/FAQ";
 import FAQJsonLd from "@/components/FAQJsonLd";
 import AdSlot from "@/components/AdSlot";
@@ -59,15 +59,17 @@ export default async function Home() {
                                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500/50"></span>
                             </span>
                             <span className="text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-                                Atualizado a cada 10 min
+                                Tempo real
                             </span>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <CurrencyCard data={currencies.USD} href="/dolar" />
-                        <CurrencyCard data={currencies.EUR} href="/euro" />
-                        <CurrencyCard data={currencies.GBP} href="/libra" />
+                        <LiveCurrencyCards
+                            initialUSD={currencies.USD}
+                            initialEUR={currencies.EUR}
+                            initialGBP={currencies.GBP}
+                        />
                     </div>
                 </section>
 

@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+*.md
+briefing_dev_horajacambio*
+.env
+.env.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
