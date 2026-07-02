@@ -6,14 +6,14 @@ import Link from "next/link";
 const navItems = [
     { href: "/", label: "Home" },
     { href: "/noticias", label: "Notícias" },
+    { href: "/cripto", label: "Cripto" },
+    { href: "/cripto/btc", label: "₿ BTC" },
+    { href: "/cripto/eth", label: "Ξ ETH" },
+    { href: "/cripto/sol", label: "◎ SOL" },
     { href: "/dolar", label: "Dólar" },
     { href: "/euro", label: "Euro" },
     { href: "/libra", label: "Libra" },
     { href: "/peso-argentino", label: "Peso ARS" },
-    { href: "/dolar-canadense", label: "CAD" },
-    { href: "/iene", label: "JPY" },
-    { href: "/franco-suico", label: "CHF" },
-    { href: "/yuan", label: "CNY" },
     { href: "/conversor", label: "Conversor" },
 ];
 

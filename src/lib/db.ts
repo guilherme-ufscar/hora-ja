@@ -13,6 +13,22 @@ const pool = new Pool({
 
 export default pool;
 
+// Executar migrações na inicialização do módulo
+let migrationsPromise: Promise<void> | null = null;
+function ensureMigrations() {
+    if (!migrationsPromise) {
+        migrationsPromise = runMigrations().catch(err => {
+            console.error("Erro ao executar migrações:", err);
+            migrationsPromise = null; // Permitir nova tentativa
+            throw err;
+        });
+    }
+    return migrationsPromise;
+}
+
+// Garante que as migrações rodam antes de qualquer query
+ensureMigrations();
+
 export async function runMigrations() {
     const client = await pool.connect();
     try {
@@ -33,6 +49,33 @@ export async function runMigrations() {
                 published_at TIMESTAMPTZ DEFAULT NOW(),
                 created_at TIMESTAMPTZ DEFAULT NOW()
             );
+
+            CREATE TABLE IF NOT EXISTS leads (
+                id SERIAL PRIMARY KEY,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                name VARCHAR(255),
+                ip_address VARCHAR(45),
+                user_agent TEXT,
+                created_at TIMESTAMPTZ DEFAULT NOW()
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_leads_email ON leads(email);
+            CREATE INDEX IF NOT EXISTS idx_leads_created_at ON leads(created_at);
+
+            CREATE TABLE IF NOT EXISTS notification_rules (
+                id SERIAL PRIMARY KEY,
+                type VARCHAR(20) NOT NULL CHECK (type IN ('email', 'whatsapp')),
+                value VARCHAR(255) NOT NULL,
+                name VARCHAR(255),
+                currency_code VARCHAR(20) NOT NULL,
+                condition_type VARCHAR(50) NOT NULL CHECK (condition_type IN ('price_above', 'price_below', 'change_percent')),
+                condition_value DECIMAL(20, 10) NOT NULL,
+                active BOOLEAN DEFAULT true,
+                created_at TIMESTAMPTZ DEFAULT NOW()
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_notification_active ON notification_rules(active);
+            CREATE INDEX IF NOT EXISTS idx_notification_type_value ON notification_rules(type, value);
 
             CREATE TABLE IF NOT EXISTS app_config (
                 key VARCHAR(100) PRIMARY KEY,

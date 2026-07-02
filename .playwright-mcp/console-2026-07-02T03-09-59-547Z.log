@@ -1,0 +1,3 @@
+[     259ms] [WARNING] Manifest: property 'id' ignored, should be same origin as document. @ http://localhost:10002/manifest.webmanifest:0
+[     360ms] [WARNING] AdSense head tag doesn't support data-nscript attribute. @ https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3621297766213698:222
+[    4564ms] [WARNING] The resource http://localhost:10002/_next/static/chunks/8b366ce251dce194.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:10002/:0

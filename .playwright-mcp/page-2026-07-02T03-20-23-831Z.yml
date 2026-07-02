@@ -1,0 +1,170 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e2]:
+    - banner [ref=f12e3]:
+      - generic [ref=f12e4]:
+        - link "HoraJá Cambio" [ref=f12e5] [cursor=pointer]:
+          - /url: /
+          - img [ref=f12e7]
+          - generic [ref=f12e10]: HoraJá Cambio
+        - navigation [ref=f12e11]:
+          - link "Home" [ref=f12e12] [cursor=pointer]:
+            - /url: /
+          - link "Notícias" [ref=f12e13] [cursor=pointer]:
+            - /url: /noticias
+          - link "Cripto" [ref=f12e14] [cursor=pointer]:
+            - /url: /cripto
+          - link "₿ BTC" [ref=f12e15] [cursor=pointer]:
+            - /url: /cripto/btc
+          - link "Ξ ETH" [ref=f12e16] [cursor=pointer]:
+            - /url: /cripto/eth
+          - link "◎ SOL" [ref=f12e17] [cursor=pointer]:
+            - /url: /cripto/sol
+          - link "Dólar" [ref=f12e18] [cursor=pointer]:
+            - /url: /dolar
+          - link "Euro" [ref=f12e19] [cursor=pointer]:
+            - /url: /euro
+          - link "Libra" [ref=f12e20] [cursor=pointer]:
+            - /url: /libra
+          - link "Peso ARS" [ref=f12e21] [cursor=pointer]:
+            - /url: /peso-argentino
+          - link "Conversor" [ref=f12e22] [cursor=pointer]:
+            - /url: /conversor
+    - main [ref=f12e23]:
+      - generic [ref=f12e25]:
+        - generic [ref=f12e26]:
+          - generic [ref=f12e27]:
+            - generic [ref=f12e31]: Atualizado a cada 10 min
+            - heading "🇺🇸 Cotação do Dólar Hoje" [level=1] [ref=f12e32]
+            - paragraph [ref=f12e33]: Acompanhe o valor atualizado de Dólar Comercial frente ao Real (BRL), com histórico, contexto e ferramentas para comparar custos de câmbio.
+            - button "Notificar" [ref=f12e34]:
+              - img [ref=f12e35]
+              - generic [ref=f12e38]: Notificar
+          - generic [ref=f12e40]:
+            - img [ref=f12e42]
+            - generic [ref=f12e45]:
+              - heading "🇺🇸 Receba alertas de Dólar" [level=3] [ref=f12e46]
+              - paragraph [ref=f12e47]: Nunca perca o melhor momento para comprar ou vender! Configure notificações e receba alertas por email ou WhatsApp quando Dólar atingir o valor que você deseja.
+              - generic [ref=f12e48]:
+                - generic [ref=f12e49]:
+                  - img [ref=f12e51]
+                  - generic [ref=f12e54]:
+                    - generic [ref=f12e55]: Notificações por Email
+                    - generic [ref=f12e56]: Receba alertas diretamente na sua caixa de entrada
+                - generic [ref=f12e57]:
+                  - img [ref=f12e59]
+                  - generic [ref=f12e61]:
+                    - generic [ref=f12e62]: Notificações por WhatsApp
+                    - generic [ref=f12e63]: Alertas instantâneos no seu celular
+              - generic [ref=f12e64]:
+                - heading "Como funciona?" [level=4] [ref=f12e65]
+                - list [ref=f12e66]:
+                  - listitem [ref=f12e67]: "• Configure o valor desejado (ex: avisar quando USD atingir R$ 6,00)"
+                  - listitem [ref=f12e68]: • Escolha receber por email ou WhatsApp
+                  - listitem [ref=f12e69]: • Receba o alerta automaticamente quando a condição for atingida
+          - generic [ref=f12e72]:
+            - generic [ref=f12e73]:
+              - generic [ref=f12e74]: Valor atualizado
+              - generic [ref=f12e75]: R$ 5,22
+              - generic [ref=f12e76]:
+                - generic [ref=f12e77]: ↑ +0.90%
+                - generic [ref=f12e78]: Hoje
+            - generic [ref=f12e80]:
+              - generic [ref=f12e81]: Última atualização
+              - generic [ref=f12e82]: 01 de jul., às 23:56
+              - generic [ref=f12e83]: "Fonte: AwesomeAPI"
+          - generic [ref=f12e84]:
+            - heading "Entendendo o Dólar Comercial" [level=2] [ref=f12e85]
+            - paragraph [ref=f12e86]: O dólar comercial é a cotação oficial usada no mercado financeiro brasileiro para importação, exportação e transações entre empresas e instituições. Ele serve como referência mais pura de mercado do que o dólar turismo.
+            - paragraph [ref=f12e87]: Oscilações do dólar afetam preços, inflação, custo de viagens e decisões de investimento. Por isso, acompanhar a cotação em tempo real ajuda tanto no planejamento financeiro quanto na leitura do cenário econômico.
+          - generic [ref=f12e89]:
+            - generic [ref=f12e90]:
+              - generic [ref=f12e91]:
+                - heading "Variação histórica" [level=2] [ref=f12e92]
+                - paragraph [ref=f12e93]: Compare o comportamento do câmbio em diferentes janelas de tempo.
+              - generic [ref=f12e94]:
+                - button "7 dias" [ref=f12e95]
+                - button "30 dias" [ref=f12e96]
+                - button "90 dias" [ref=f12e97]
+                - button "365 dias" [ref=f12e98]
+            - generic [ref=f12e99]:
+              - img [ref=f12e102]
+              - complementary [ref=f12e123]:
+                - generic [ref=f12e124]: Resumo
+                - generic [ref=f12e125]:
+                  - generic [ref=f12e126]:
+                    - generic [ref=f12e127]: Variação no período
+                    - generic [ref=f12e128]: "-0.37%"
+                  - generic [ref=f12e129]:
+                    - generic [ref=f12e130]: Menor cotação
+                    - generic [ref=f12e131]: R$ 5,17
+                  - generic [ref=f12e132]:
+                    - generic [ref=f12e133]: Maior cotação
+                    - generic [ref=f12e134]: R$ 5,19
+          - generic [ref=f12e135]:
+            - generic [ref=f12e136]:
+              - generic [ref=f12e137]: Onde comprar câmbio
+              - heading "Parceiros para comparar antes de fechar a operação" [level=2] [ref=f12e138]
+              - paragraph [ref=f12e139]: Cada página de moeda traz estes parceiros com links preparados para UTM e affiliate ID. Quando o dono do site fornecer os IDs finais, basta substituir os marcadores pendentes.
+            - generic [ref=f12e140]:
+              - link "Wise Wise Conta internacional e envio de dinheiro com boa transparência de custos e taxa efetiva. Ver condições" [ref=f12e141] [cursor=pointer]:
+                - /url: https://wise.com/invite/mic/diegosilasg
+                - generic [ref=f12e142]: Wise
+                - generic [ref=f12e143]:
+                  - heading "Wise" [level=3] [ref=f12e144]
+                  - paragraph [ref=f12e145]: Conta internacional e envio de dinheiro com boa transparência de custos e taxa efetiva.
+                - generic [ref=f12e146]: Ver condições
+              - link "RO Remessa Online Solução popular para remessas internacionais com foco em praticidade no envio a partir do Brasil. Comparar remessa" [ref=f12e147] [cursor=pointer]:
+                - /url: https://remessaonline.com.br?utm_voucher=dg0608&utm_medium=mgm-share
+                - generic [ref=f12e148]: RO
+                - generic [ref=f12e149]:
+                  - heading "Remessa Online" [level=3] [ref=f12e150]
+                  - paragraph [ref=f12e151]: Solução popular para remessas internacionais com foco em praticidade no envio a partir do Brasil.
+                - generic [ref=f12e152]: Comparar remessa
+              - link "Nomad Nomad Conta global com foco em gastos e investimentos em dólar para quem viaja ou compra no exterior. Conhecer a conta" [ref=f12e153] [cursor=pointer]:
+                - /url: https://nomad.onelink.me/wIQT/Account?code=9T7WDPPU37&n=Diego
+                - generic [ref=f12e154]: Nomad
+                - generic [ref=f12e155]:
+                  - heading "Nomad" [level=3] [ref=f12e156]
+                  - paragraph [ref=f12e157]: Conta global com foco em gastos e investimentos em dólar para quem viaja ou compra no exterior.
+                - generic [ref=f12e158]: Conhecer a conta
+              - link "Inter Banco Inter Alternativa bancária com soluções de câmbio e serviços internacionais dentro de um ecossistema local. Ver câmbio" [ref=f12e159] [cursor=pointer]:
+                - /url: https://inter-co.onelink.me/Qyu7/ste2n6tb
+                - generic [ref=f12e160]: Inter
+                - generic [ref=f12e161]:
+                  - heading "Banco Inter" [level=3] [ref=f12e162]
+                  - paragraph [ref=f12e163]: Alternativa bancária com soluções de câmbio e serviços internacionais dentro de um ecossistema local.
+                - generic [ref=f12e164]: Ver câmbio
+              - link "WU Western Union Marca tradicional em transferências internacionais, útil para comparar opções de envio e retirada. Ver opções" [ref=f12e165] [cursor=pointer]:
+                - /url: https://ssqt.co/mQTW7gU
+                - generic [ref=f12e166]: WU
+                - generic [ref=f12e167]:
+                  - heading "Western Union" [level=3] [ref=f12e168]
+                  - paragraph [ref=f12e169]: Marca tradicional em transferências internacionais, útil para comparar opções de envio e retirada.
+                - generic [ref=f12e170]: Ver opções
+          - generic [ref=f12e171]:
+            - heading "Dúvidas frequentes sobre Dólar" [level=2] [ref=f12e172]
+            - generic [ref=f12e173]:
+              - generic [ref=f12e174]:
+                - button "Qual a diferença entre dólar comercial e turismo?" [expanded] [ref=f12e175]:
+                  - heading "Qual a diferença entre dólar comercial e turismo?" [level=3] [ref=f12e176]
+                  - img [ref=f12e178]
+                - generic [ref=f12e181]: O dólar comercial é a referência do mercado financeiro. O turismo costuma ser mais caro porque inclui custos operacionais, disponibilidade de papel-moeda e margem da instituição que vende a moeda.
+              - generic [ref=f12e182]:
+                - button "Quando vale a pena acompanhar o dólar com mais frequência?" [ref=f12e183]:
+                  - heading "Quando vale a pena acompanhar o dólar com mais frequência?" [level=3] [ref=f12e184]
+                  - img [ref=f12e186]
+                - generic [ref=f12e188]: Em períodos de viagem, remessa internacional, compras no exterior ou maior volatilidade econômica, acompanhar o USD/BRL mais de perto ajuda a escolher melhor o momento da operação.
+        - complementary [ref=f12e189]:
+          - generic [ref=f12e190]:
+            - generic [ref=f12e191]: Resumo rápido
+            - generic [ref=f12e192]:
+              - generic [ref=f12e193]:
+                - generic [ref=f12e194]: Compra
+                - strong [ref=f12e195]: R$ 5,22
+              - generic [ref=f12e196]:
+                - generic [ref=f12e197]: Venda
+                - strong [ref=f12e198]: R$ 5,22
+              - generic [ref=f12e199]:
+                - generic [ref=f12e200]: Máxima / mínima
+                - strong [ref=f12e201]: R$ 5,25 / R$ 5,15
+  - alert [ref=f12e202]

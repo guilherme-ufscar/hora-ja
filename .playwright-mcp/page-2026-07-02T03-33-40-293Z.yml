@@ -1,0 +1,272 @@
+- generic [active] [ref=f54e1]:
+  - generic [ref=f54e2]:
+    - banner [ref=f54e3]:
+      - generic [ref=f54e4]:
+        - link "HoraJá Cambio" [ref=f54e5] [cursor=pointer]:
+          - /url: /
+          - img [ref=f54e7]
+          - generic [ref=f54e10]: HoraJá Cambio
+        - navigation [ref=f54e11]:
+          - link "Home" [ref=f54e12] [cursor=pointer]:
+            - /url: /
+          - link "Notícias" [ref=f54e13] [cursor=pointer]:
+            - /url: /noticias
+          - link "Cripto" [ref=f54e14] [cursor=pointer]:
+            - /url: /cripto
+          - link "₿ BTC" [ref=f54e15] [cursor=pointer]:
+            - /url: /cripto/btc
+          - link "Ξ ETH" [ref=f54e16] [cursor=pointer]:
+            - /url: /cripto/eth
+          - link "◎ SOL" [ref=f54e17] [cursor=pointer]:
+            - /url: /cripto/sol
+          - link "Dólar" [ref=f54e18] [cursor=pointer]:
+            - /url: /dolar
+          - link "Euro" [ref=f54e19] [cursor=pointer]:
+            - /url: /euro
+          - link "Libra" [ref=f54e20] [cursor=pointer]:
+            - /url: /libra
+          - link "Peso ARS" [ref=f54e21] [cursor=pointer]:
+            - /url: /peso-argentino
+          - link "Conversor" [ref=f54e22] [cursor=pointer]:
+            - /url: /conversor
+    - main [ref=f54e23]:
+      - generic [ref=f54e24]:
+        - generic [ref=f54e25]:
+          - generic [ref=f54e26]: Ferramentas de câmbio
+          - heading "Conversor de moedas" [level=1] [ref=f54e27]
+          - paragraph [ref=f54e28]: Faça conversões em tempo real, compare IOF por forma de pagamento e estime o custo total em reais para viagens, remessas e compras internacionais.
+        - generic [ref=f54e30]:
+          - generic [ref=f54e33]:
+            - generic [ref=f54e34]:
+              - generic [ref=f54e35]:
+                - text: Conversor em tempo real
+                - heading "Converta, compare IOF e veja o custo estimado" [level=2] [ref=f54e36]
+              - generic [ref=f54e37]:
+                - button "Cartão · IOF 6.38%" [ref=f54e38]
+                - button "Espécie · IOF 0.38%" [ref=f54e39]
+                - button "Transferência · IOF 0.38%" [ref=f54e40]
+                - button "IOF incluído" [ref=f54e41]
+            - generic [ref=f54e42]:
+              - generic [ref=f54e43]:
+                - generic [ref=f54e44]: De
+                - generic [ref=f54e45]:
+                  - textbox "0,00" [ref=f54e46]: "1"
+                  - combobox [ref=f54e48] [cursor=pointer]:
+                    - option "🇧🇷 BRL - Real Brasileiro"
+                    - option "🇺🇸 USD - Dólar Comercial" [selected]
+                    - option "🇪🇺 EUR - Euro"
+                    - option "🇬🇧 GBP - Libra Esterlina"
+                    - option "🇦🇷 ARS - Peso Argentino"
+                    - option "🇨🇦 CAD - Dólar Canadense"
+                    - option "🇨🇭 CHF - Franco Suíço"
+                    - option "🇯🇵 JPY - Iene Japonês"
+                    - option "🇨🇳 CNY - Yuan Chinês"
+                    - option "BTC - Bitcoin"
+                    - option "ETH - Ethereum"
+                    - option "SOL - Solana"
+                    - option "XRP - XRP"
+                    - option "ADA - Cardano"
+                    - option "DOT - Polkadot"
+              - button "Inverter moedas" [ref=f54e50] [cursor=pointer]:
+                - img [ref=f54e51]
+              - generic [ref=f54e57]:
+                - generic [ref=f54e58]: Para
+                - generic [ref=f54e59]:
+                  - textbox "0,00" [ref=f54e60]: "5.55"
+                  - combobox [ref=f54e62] [cursor=pointer]:
+                    - option "🇧🇷 BRL - Real Brasileiro" [selected]
+                    - option "🇺🇸 USD - Dólar Comercial"
+                    - option "🇪🇺 EUR - Euro"
+                    - option "🇬🇧 GBP - Libra Esterlina"
+                    - option "🇦🇷 ARS - Peso Argentino"
+                    - option "🇨🇦 CAD - Dólar Canadense"
+                    - option "🇨🇭 CHF - Franco Suíço"
+                    - option "🇯🇵 JPY - Iene Japonês"
+                    - option "🇨🇳 CNY - Yuan Chinês"
+                    - option "BTC - Bitcoin"
+                    - option "ETH - Ethereum"
+                    - option "SOL - Solana"
+                    - option "XRP - XRP"
+                    - option "ADA - Cardano"
+                    - option "DOT - Polkadot"
+            - generic [ref=f54e63]:
+              - generic [ref=f54e64]:
+                - generic [ref=f54e65]:
+                  - generic [ref=f54e66]:
+                    - heading "Últimas 5 cotações" [level=3] [ref=f54e67]
+                    - paragraph [ref=f54e68]: Referência recente para a moeda mais importante desta conversão.
+                  - generic [ref=f54e69]: "-0.04%"
+                - generic [ref=f54e70]:
+                  - generic [ref=f54e71]:
+                    - generic [ref=f54e73]: Máx. R$ 5,25 · Mín. R$ 5,15
+                    - generic [ref=f54e74]:
+                      - generic [ref=f54e75]: R$ 5,22
+                      - generic [ref=f54e76]: +0.89%
+                  - generic [ref=f54e77]:
+                    - generic [ref=f54e79]: Máx. R$ 5,25 · Mín. R$ 5,15
+                    - generic [ref=f54e80]:
+                      - generic [ref=f54e81]: R$ 5,22
+                      - generic [ref=f54e82]: +0.90%
+                  - generic [ref=f54e83]:
+                    - generic [ref=f54e85]: Máx. R$ 5,25 · Mín. R$ 5,15
+                    - generic [ref=f54e86]:
+                      - generic [ref=f54e87]: R$ 5,22
+                      - generic [ref=f54e88]: +0.89%
+                  - generic [ref=f54e89]:
+                    - generic [ref=f54e91]: Máx. R$ 5,25 · Mín. R$ 5,15
+                    - generic [ref=f54e92]:
+                      - generic [ref=f54e93]: R$ 5,22
+                      - generic [ref=f54e94]: +0.85%
+                  - generic [ref=f54e95]:
+                    - generic [ref=f54e96]:
+                      - generic [ref=f54e97]: 01 de jul., às 23:38
+                      - generic [ref=f54e98]: Máx. R$ 5,25 · Mín. R$ 5,15
+                    - generic [ref=f54e99]:
+                      - generic [ref=f54e100]: R$ 5,22
+                      - generic [ref=f54e101]: +0.89%
+              - generic [ref=f54e102]:
+                - heading "Resumo da conversão" [level=3] [ref=f54e103]
+                - generic [ref=f54e104]:
+                  - generic [ref=f54e105]:
+                    - generic [ref=f54e106]: Moeda de origem
+                    - strong [ref=f54e107]: 🇺🇸 USD · Dólar Comercial
+                  - generic [ref=f54e108]:
+                    - generic [ref=f54e109]: Moeda de destino
+                    - strong [ref=f54e110]: 🇧🇷 BRL · Real Brasileiro
+                  - generic [ref=f54e111]:
+                    - generic [ref=f54e112]: Cotação usada
+                    - strong [ref=f54e113]: R$ 5,22
+                  - generic [ref=f54e114]:
+                    - generic [ref=f54e115]: Última atualização
+                    - strong [ref=f54e116]: 02 de jul., às 00:13
+                  - generic [ref=f54e117]:
+                    - generic [ref=f54e118]: Simulação com Cartão
+                    - strong [ref=f54e119]: IOF de 6.38% aplicado
+                  - generic [ref=f54e120]:
+                    - generic [ref=f54e121]: Total em BRL da origem
+                    - strong [ref=f54e122]: R$ 5,55
+          - generic [ref=f54e123]:
+            - generic [ref=f54e124]:
+              - generic [ref=f54e125]:
+                - generic [ref=f54e126]: Calculadora de viagem
+                - heading "Quanto isso vira em reais com IOF e spread" [level=3] [ref=f54e127]
+                - paragraph [ref=f54e128]: Escolha o destino, informe o valor na moeda local e veja o total estimado em BRL com base na cotação atual.
+              - generic [ref=f54e129]:
+                - generic [ref=f54e130]:
+                  - text: País de destino
+                  - combobox "País de destino" [ref=f54e131]:
+                    - option "Estados Unidos" [selected]
+                    - option "Zona do Euro"
+                    - option "Reino Unido"
+                    - option "Argentina"
+                    - option "Canadá"
+                    - option "Suíça"
+                    - option "Japão"
+                    - option "China"
+                - generic [ref=f54e132]:
+                  - text: Valor na moeda local
+                  - textbox "Valor na moeda local" [ref=f54e133]:
+                    - /placeholder: 0,00
+                    - text: "100"
+              - generic [ref=f54e134]:
+                - button "Cartão" [ref=f54e135]
+                - button "Espécie" [ref=f54e136]
+                - button "Transferência" [ref=f54e137]
+              - generic [ref=f54e138]:
+                - generic [ref=f54e139]:
+                  - generic [ref=f54e140]: Valor base
+                  - generic [ref=f54e141]: R$ 521,83
+                - generic [ref=f54e142]:
+                  - generic [ref=f54e143]: Spread estimado
+                  - generic [ref=f54e144]: R$ 1,24
+                - generic [ref=f54e145]:
+                  - generic [ref=f54e146]: IOF
+                  - generic [ref=f54e147]: R$ 33,37
+                - generic [ref=f54e148]:
+                  - generic [ref=f54e149]: Total estimado em BRL
+                  - generic [ref=f54e150]: R$ 556,44
+            - complementary [ref=f54e151]:
+              - generic [ref=f54e152]:
+                - text: Compartilhar
+                - heading "Envie a simulação para outra pessoa" [level=3] [ref=f54e153]
+                - paragraph [ref=f54e154]: Use a Web Share API quando disponível no dispositivo. Em navegadores compatíveis, o resumo também pode ser copiado.
+              - generic [ref=f54e155]:
+                - generic [ref=f54e156]:
+                  - strong [ref=f54e157]: "Destino:"
+                  - text: Estados Unidos
+                - generic [ref=f54e158]:
+                  - strong [ref=f54e159]: "Valor:"
+                  - text: 100,00 USD
+                - generic [ref=f54e160]:
+                  - strong [ref=f54e161]: "Pagamento:"
+                  - text: Cartão
+                - generic [ref=f54e162]:
+                  - strong [ref=f54e163]: "Taxa efetiva:"
+                  - text: R$ 5,56
+              - button "Compartilhar simulação" [ref=f54e164]
+        - generic [ref=f54e166]:
+          - generic [ref=f54e167]:
+            - generic [ref=f54e168]:
+              - generic [ref=f54e169]:
+                - img [ref=f54e170]
+                - text: Alertas de cotação
+              - generic [ref=f54e173]:
+                - img [ref=f54e174]
+                - text: Ative notificações
+            - heading "Crie alertas com moeda, valor alvo e direção" [level=3] [ref=f54e177]
+            - paragraph [ref=f54e178]: Configure moeda, valor alvo e direção acima/abaixo. Os alertas ficam salvos no localStorage do navegador, verificam as cotações carregadas no site e o limite é de 3 alertas ativos por usuário neste dispositivo.
+          - generic [ref=f54e179]:
+            - generic [ref=f54e180]:
+              - generic [ref=f54e181]: Ativação de notificações
+              - paragraph [ref=f54e182]: Clique no sino para permitir notificações neste navegador antes de criar os alertas.
+            - button "Ativar notificações" [ref=f54e183]:
+              - img [ref=f54e184]
+              - text: Ativar notificações
+          - generic [ref=f54e187]:
+            - generic [ref=f54e188]:
+              - text: Moeda
+              - combobox "Moeda" [ref=f54e189]:
+                - option "🇺🇸 Dólar Comercial" [selected]
+                - option "🇪🇺 Euro"
+                - option "🇬🇧 Libra Esterlina"
+                - option "🇦🇷 Peso Argentino"
+                - option "🇨🇦 Dólar Canadense"
+                - option "🇨🇭 Franco Suíço"
+                - option "🇯🇵 Iene Japonês"
+                - option "🇨🇳 Yuan Chinês"
+            - generic [ref=f54e190]:
+              - text: Valor alvo em BRL
+              - textbox "Valor alvo em BRL" [ref=f54e191]:
+                - /placeholder: "5.40"
+            - generic [ref=f54e192]:
+              - text: Direção
+              - generic [ref=f54e193]:
+                - button "Acima" [ref=f54e194]
+                - button "Abaixo" [ref=f54e195]
+          - button "Criar alerta no navegador" [ref=f54e197]:
+            - img [ref=f54e198]
+            - text: Criar alerta no navegador
+          - generic [ref=f54e202]: Nenhum alerta ativo ainda.
+        - generic [ref=f54e203]:
+          - heading "Como usar o conversor com mais inteligência" [level=2] [ref=f54e204]
+          - paragraph [ref=f54e205]: A cotação comercial ajuda a acompanhar o mercado, mas a decisão prática exige olhar também para IOF, spread, tempo da operação e o objetivo do gasto. Por isso, o conversor agora vai além do valor bruto e aproxima o cálculo do custo real em reais.
+          - paragraph [ref=f54e206]: Se a operação for para viagem, a calculadora complementar ajuda a comparar cenários com mais contexto. Se for para remessa, o ideal é combinar a simulação com uma comparação entre parceiros e prazo de liquidação.
+        - generic [ref=f54e207]:
+          - heading "Dúvidas sobre conversão e IOF" [level=2] [ref=f54e208]
+          - generic [ref=f54e209]:
+            - generic [ref=f54e210]:
+              - button "Os valores do conversor já incluem IOF?" [expanded] [ref=f54e211]:
+                - heading "Os valores do conversor já incluem IOF?" [level=3] [ref=f54e212]
+                - img [ref=f54e214]
+              - generic [ref=f54e217]: Você pode alternar entre cartão, espécie e transferência para ver o efeito estimado do IOF no cálculo. A cotação-base continua separada para facilitar a comparação.
+            - generic [ref=f54e218]:
+              - button "A calculadora de viagem serve para qual tipo de decisão?" [ref=f54e219]:
+                - heading "A calculadora de viagem serve para qual tipo de decisão?" [level=3] [ref=f54e220]
+                - img [ref=f54e222]
+              - generic [ref=f54e224]: Ela ajuda a prever o custo total em BRL antes de comprar moeda, usar cartão internacional ou enviar dinheiro para o exterior, sempre com foco em custo final e não só na cotação isolada.
+            - generic [ref=f54e225]:
+              - button "Posso compartilhar a simulação no celular?" [ref=f54e226]:
+                - heading "Posso compartilhar a simulação no celular?" [level=3] [ref=f54e227]
+                - img [ref=f54e229]
+              - generic [ref=f54e231]: Sim. Em navegadores compatíveis, o site usa a Web Share API para compartilhar a simulação. Caso não esteja disponível, o resumo pode ser copiado.
+  - alert [ref=f54e232]

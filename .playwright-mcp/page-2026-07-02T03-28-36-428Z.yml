@@ -1,0 +1,134 @@
+- generic [active] [ref=f30e1]:
+  - generic [ref=f30e2]:
+    - banner [ref=f30e3]:
+      - generic [ref=f30e4]:
+        - link "HoraJá Cambio" [ref=f30e5] [cursor=pointer]:
+          - /url: /
+          - img [ref=f30e7]
+          - generic [ref=f30e10]: HoraJá Cambio
+        - navigation [ref=f30e11]:
+          - link "Home" [ref=f30e12] [cursor=pointer]:
+            - /url: /
+          - link "Notícias" [ref=f30e13] [cursor=pointer]:
+            - /url: /noticias
+          - link "Cripto" [ref=f30e14] [cursor=pointer]:
+            - /url: /cripto
+          - link "₿ BTC" [ref=f30e15] [cursor=pointer]:
+            - /url: /cripto/btc
+          - link "Ξ ETH" [ref=f30e16] [cursor=pointer]:
+            - /url: /cripto/eth
+          - link "◎ SOL" [ref=f30e17] [cursor=pointer]:
+            - /url: /cripto/sol
+          - link "Dólar" [ref=f30e18] [cursor=pointer]:
+            - /url: /dolar
+          - link "Euro" [ref=f30e19] [cursor=pointer]:
+            - /url: /euro
+          - link "Libra" [ref=f30e20] [cursor=pointer]:
+            - /url: /libra
+          - link "Peso ARS" [ref=f30e21] [cursor=pointer]:
+            - /url: /peso-argentino
+          - link "Conversor" [ref=f30e22] [cursor=pointer]:
+            - /url: /conversor
+    - main [ref=f30e23]:
+      - generic [ref=f30e25]:
+        - generic [ref=f30e26]:
+          - generic [ref=f30e27]:
+            - generic [ref=f30e31]: Criptoativo
+            - heading "₿ Bitcoin" [level=1] [ref=f30e32]
+            - paragraph [ref=f30e33]: A primeira e mais valiosa criptomoeda do mundo, criada em 2009 por um desconhecido sob o pseudônimo Satoshi Nakamoto.
+          - generic [ref=f30e35]:
+            - img [ref=f30e37]
+            - generic [ref=f30e40]:
+              - heading "₿ Receba alertas de Bitcoin" [level=3] [ref=f30e41]
+              - paragraph [ref=f30e42]: Nunca perca o melhor momento para comprar ou vender! Configure notificações e receba alertas por email ou WhatsApp quando Bitcoin atingir o valor que você deseja.
+              - generic [ref=f30e43]:
+                - generic [ref=f30e44]:
+                  - img [ref=f30e46]
+                  - generic [ref=f30e49]:
+                    - generic [ref=f30e50]: Notificações por Email
+                    - generic [ref=f30e51]: Receba alertas diretamente na sua caixa de entrada
+                - generic [ref=f30e52]:
+                  - img [ref=f30e54]
+                  - generic [ref=f30e56]:
+                    - generic [ref=f30e57]: Notificações por WhatsApp
+                    - generic [ref=f30e58]: Alertas instantâneos no seu celular
+              - generic [ref=f30e59]:
+                - heading "Como funciona?" [level=4] [ref=f30e60]
+                - list [ref=f30e61]:
+                  - listitem [ref=f30e62]: "• Configure o valor desejado (ex: avisar quando BTC atingir R$ 6,00)"
+                  - listitem [ref=f30e63]: • Escolha receber por email ou WhatsApp
+                  - listitem [ref=f30e64]: • Receba o alerta automaticamente quando a condição for atingida
+              - button "Notificar" [ref=f30e66]:
+                - img [ref=f30e67]
+                - generic [ref=f30e70]: Notificar
+          - generic [ref=f30e73]:
+            - generic [ref=f30e74]:
+              - generic [ref=f30e75]: Valor em BRL
+              - generic [ref=f30e77]:
+                - generic [ref=f30e78]: ↑ 0.00%
+                - generic [ref=f30e79]: 24h
+            - generic [ref=f30e81]:
+              - generic [ref=f30e82]: Máxima 24h
+              - generic [ref=f30e83]: R$ 0,0000
+              - generic [ref=f30e84]: Mínima 24h
+              - generic [ref=f30e85]: R$ 0,0000
+          - generic [ref=f30e86]:
+            - heading "Histórico de preço (30 dias)" [level=2] [ref=f30e87]
+            - generic [ref=f30e90]:
+              - generic [ref=f30e91]: 30 dias atrás
+              - generic [ref=f30e92]: Hoje
+          - generic [ref=f30e93]:
+            - heading "Sobre o Bitcoin" [level=2] [ref=f30e94]
+            - paragraph [ref=f30e95]: O Bitcoin (BTC) é uma das principais criptomoedas do mercado. O mercado de criptoativos opera 24 horas por dia, 7 dias por semana, o que significa que os preços podem mudar a qualquer momento.
+            - paragraph [ref=f30e96]: Utilizamos dados de APIs confiáveis para manter as cotações sempre atualizadas. Lembre-se que criptomoedas são ativos de alto risco e volatilidade, e o valor pode oscilar significativamente em curtos períodos de tempo.
+          - generic [ref=f30e98]:
+            - generic [ref=f30e99]: Espaço reservado
+            - strong [ref=f30e100]: Parceiros para comparar antes de fechar a operação
+            - generic [ref=f30e101]: 728×90
+        - complementary [ref=f30e102]:
+          - generic [ref=f30e103]:
+            - generic [ref=f30e104]: Resumo
+            - generic [ref=f30e105]:
+              - generic [ref=f30e106]:
+                - generic [ref=f30e107]: Preço atual
+                - strong [ref=f30e108]: R$ 0,0000
+              - generic [ref=f30e109]:
+                - generic [ref=f30e110]: Variação 24h
+                - strong [ref=f30e111]: +%
+              - generic [ref=f30e112]:
+                - generic [ref=f30e113]: Volume 24h
+                - strong [ref=f30e114]: R$ 0.00
+          - generic [ref=f30e115]:
+            - generic [ref=f30e116]: Outras Criptos
+            - generic [ref=f30e117]:
+              - link "Ξ Ethereum ETH" [ref=f30e118] [cursor=pointer]:
+                - /url: /cripto/eth
+                - generic [ref=f30e119]: Ξ
+                - generic [ref=f30e120]:
+                  - generic [ref=f30e121]: Ethereum
+                  - generic [ref=f30e122]: ETH
+              - link "◎ Solana SOL" [ref=f30e123] [cursor=pointer]:
+                - /url: /cripto/sol
+                - generic [ref=f30e124]: ◎
+                - generic [ref=f30e125]:
+                  - generic [ref=f30e126]: Solana
+                  - generic [ref=f30e127]: SOL
+              - link "✕ Ripple XRP" [ref=f30e128] [cursor=pointer]:
+                - /url: /cripto/xrp
+                - generic [ref=f30e129]: ✕
+                - generic [ref=f30e130]:
+                  - generic [ref=f30e131]: Ripple
+                  - generic [ref=f30e132]: XRP
+              - link "₳ Cardano ADA" [ref=f30e133] [cursor=pointer]:
+                - /url: /cripto/ada
+                - generic [ref=f30e134]: ₳
+                - generic [ref=f30e135]:
+                  - generic [ref=f30e136]: Cardano
+                  - generic [ref=f30e137]: ADA
+              - link "● Polkadot DOT" [ref=f30e138] [cursor=pointer]:
+                - /url: /cripto/dot
+                - generic [ref=f30e139]: ●
+                - generic [ref=f30e140]:
+                  - generic [ref=f30e141]: Polkadot
+                  - generic [ref=f30e142]: DOT
+  - alert [ref=f30e143]

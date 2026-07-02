@@ -9,9 +9,6 @@ export default function CurrencyQuickLinks() {
             <div className="flex flex-col gap-3 mb-8">
                 <span className="text-xs font-bold tracking-[0.25em] uppercase text-primary">Moedas acompanhadas</span>
                 <h2 className="text-3xl font-black tracking-tight text-foreground">Acesse rapidamente cada página de moeda</h2>
-                <p className="text-foreground/60 max-w-3xl">
-                    O briefing da fase 2 pediu expansão de cobertura cambial. Todas as moedas abaixo agora possuem página própria com cotação, histórico e seção de parceiros.
-                </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">

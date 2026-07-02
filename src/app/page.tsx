@@ -2,11 +2,11 @@ import Clock from "@/components/Clock";
 import LiveCurrencyCards from "@/components/LiveCurrencyCards";
 import FAQ from "@/components/FAQ";
 import FAQJsonLd from "@/components/FAQJsonLd";
-import AdSlot from "@/components/AdSlot";
 import GlobalMarketsPanel from "@/components/GlobalMarketsPanel";
 import MarketClockGrid from "@/components/MarketClockGrid";
 import CurrencyQuickLinks from "@/components/CurrencyQuickLinks";
 import NewsCard from "@/components/NewsCard";
+import EmailCapture from "@/components/EmailCapture";
 import Link from "next/link";
 import { getFeaturedCurrencies } from "@/lib/api";
 import { homepageFaq } from "@/lib/site-content";
@@ -44,10 +44,6 @@ export default async function Home() {
                     <Clock />
                 </section>
 
-                <section className="w-full flex justify-center">
-                    <AdSlot label="Banner abaixo do menu" width={728} height={90} className="max-w-[728px]" />
-                </section>
-
                 <section className="w-full flex flex-col gap-6">
                     <div className="flex flex-col sm:flex-row items-baseline sm:items-center justify-between gap-2 sm:gap-4 mb-2">
                         <div>
@@ -76,6 +72,7 @@ export default async function Home() {
                 <CurrencyQuickLinks />
                 <GlobalMarketsPanel />
                 <MarketClockGrid />
+                <EmailCapture />
 
                 {latestNews.length > 0 && (
                     <section className="flex flex-col gap-6">

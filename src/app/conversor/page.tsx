@@ -1,7 +1,6 @@
 import CurrencyConverter from "@/components/CurrencyConverter";
 import ExchangeAlerts from "@/components/ExchangeAlerts";
 import FAQ from "@/components/FAQ";
-import AdSlot from "@/components/AdSlot";
 import { getCurrencies, getRecentQuotes } from "@/lib/api";
 import { buildStaticMetadata } from "@/lib/metadata";
 
@@ -69,10 +68,6 @@ export default async function ConversorPage() {
                         CNY: recentCny,
                     }}
                 />
-            </section>
-
-            <section className="mb-16 flex justify-center">
-                <AdSlot label="Banner mobile entre seções" width={320} height={50} />
             </section>
 
             <section className="max-w-5xl mx-auto">

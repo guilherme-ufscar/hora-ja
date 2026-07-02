@@ -1,0 +1,143 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e2]:
+    - banner [ref=f12e3]:
+      - generic [ref=f12e4]:
+        - link "HoraJá Cambio" [ref=f12e5] [cursor=pointer]:
+          - /url: /
+          - img [ref=f12e7]
+          - generic [ref=f12e10]: HoraJá Cambio
+        - navigation [ref=f12e11]:
+          - link "Home" [ref=f12e12] [cursor=pointer]:
+            - /url: /
+          - link "Notícias" [ref=f12e13] [cursor=pointer]:
+            - /url: /noticias
+          - link "Cripto" [ref=f12e14] [cursor=pointer]:
+            - /url: /cripto
+          - link "₿ BTC" [ref=f12e15] [cursor=pointer]:
+            - /url: /cripto/btc
+          - link "Ξ ETH" [ref=f12e16] [cursor=pointer]:
+            - /url: /cripto/eth
+          - link "◎ SOL" [ref=f12e17] [cursor=pointer]:
+            - /url: /cripto/sol
+          - link "Dólar" [ref=f12e18] [cursor=pointer]:
+            - /url: /dolar
+          - link "Euro" [ref=f12e19] [cursor=pointer]:
+            - /url: /euro
+          - link "Libra" [ref=f12e20] [cursor=pointer]:
+            - /url: /libra
+          - link "Peso ARS" [ref=f12e21] [cursor=pointer]:
+            - /url: /peso-argentino
+          - link "Conversor" [ref=f12e22] [cursor=pointer]:
+            - /url: /conversor
+    - main [ref=f12e23]:
+      - generic [ref=f12e25]:
+        - generic [ref=f12e26]:
+          - generic [ref=f12e27]:
+            - generic [ref=f12e31]: Criptoativo
+            - heading "₿ Bitcoin" [level=1] [ref=f12e32]
+            - paragraph [ref=f12e33]: A primeira e mais valiosa criptomoeda do mundo, criada em 2009 por um desconhecido sob o pseudônimo Satoshi Nakamoto.
+          - generic [ref=f12e36]:
+            - generic [ref=f12e37]:
+              - generic [ref=f12e38]: Valor em BRL
+              - generic [ref=f12e39]: R$ 635.000,00
+              - generic [ref=f12e40]:
+                - generic [ref=f12e41]: ↓ 1.05%
+                - generic [ref=f12e42]: 24h
+            - generic [ref=f12e44]:
+              - generic [ref=f12e45]: Máxima 24h
+              - generic [ref=f12e46]: R$ 647.700,00
+              - generic [ref=f12e47]: Mínima 24h
+              - generic [ref=f12e48]: R$ 622.300,00
+          - generic [ref=f12e49]:
+            - heading "Histórico de preço (30 dias)" [level=2] [ref=f12e50]
+            - generic [ref=f12e51]:
+              - generic [ref=f12e52]:
+                - 'generic "02 de jun.: R$ 589.790,63" [ref=f12e53]'
+                - 'generic "03 de jun.: R$ 581.257,31" [ref=f12e54]'
+                - 'generic "04 de jun.: R$ 598.389,52" [ref=f12e55]'
+                - 'generic "05 de jun.: R$ 691.222,76" [ref=f12e56]'
+                - 'generic "06 de jun.: R$ 626.647,54" [ref=f12e57]'
+                - 'generic "07 de jun.: R$ 625.589,46" [ref=f12e58]'
+                - 'generic "08 de jun.: R$ 591.966,60" [ref=f12e59]'
+                - 'generic "09 de jun.: R$ 666.032,81" [ref=f12e60]'
+                - 'generic "10 de jun.: R$ 654.428,06" [ref=f12e61]'
+                - 'generic "11 de jun.: R$ 599.942,25" [ref=f12e62]'
+                - 'generic "12 de jun.: R$ 690.075,49" [ref=f12e63]'
+                - 'generic "13 de jun.: R$ 615.709,07" [ref=f12e64]'
+                - 'generic "14 de jun.: R$ 647.239,61" [ref=f12e65]'
+                - 'generic "15 de jun.: R$ 631.425,51" [ref=f12e66]'
+                - 'generic "16 de jun.: R$ 646.669,64" [ref=f12e67]'
+                - 'generic "17 de jun.: R$ 605.457,54" [ref=f12e68]'
+                - 'generic "18 de jun.: R$ 597.629,17" [ref=f12e69]'
+                - 'generic "19 de jun.: R$ 618.523,53" [ref=f12e70]'
+                - 'generic "20 de jun.: R$ 609.877,66" [ref=f12e71]'
+                - 'generic "21 de jun.: R$ 678.224,58" [ref=f12e72]'
+                - 'generic "22 de jun.: R$ 594.106,88" [ref=f12e73]'
+                - 'generic "23 de jun.: R$ 599.172,01" [ref=f12e74]'
+                - 'generic "24 de jun.: R$ 684.660,60" [ref=f12e75]'
+                - 'generic "25 de jun.: R$ 624.319,11" [ref=f12e76]'
+                - 'generic "26 de jun.: R$ 594.341,08" [ref=f12e77]'
+                - 'generic "27 de jun.: R$ 667.993,28" [ref=f12e78]'
+                - 'generic "28 de jun.: R$ 622.459,91" [ref=f12e79]'
+                - 'generic "29 de jun.: R$ 636.361,11" [ref=f12e80]'
+                - 'generic "30 de jun.: R$ 680.337,96" [ref=f12e81]'
+                - 'generic "01 de jul.: R$ 587.188,88" [ref=f12e82]'
+                - 'generic "02 de jul.: R$ 589.781,59" [ref=f12e83]'
+              - generic [ref=f12e84]:
+                - generic [ref=f12e85]: 30 dias atrás
+                - generic [ref=f12e86]: Hoje
+          - generic [ref=f12e87]:
+            - heading "Sobre o Bitcoin" [level=2] [ref=f12e88]
+            - paragraph [ref=f12e89]: O Bitcoin (BTC) é uma das principais criptomoedas do mercado. O mercado de criptoativos opera 24 horas por dia, 7 dias por semana, o que significa que os preços podem mudar a qualquer momento.
+            - paragraph [ref=f12e90]: Utilizamos dados de APIs confiáveis para manter as cotações sempre atualizadas. Lembre-se que criptomoedas são ativos de alto risco e volatilidade, e o valor pode oscilar significativamente em curtos períodos de tempo.
+          - generic [ref=f12e92]:
+            - generic [ref=f12e93]: Espaço reservado
+            - strong [ref=f12e94]: Parceiros para comparar antes de fechar a operação
+            - generic [ref=f12e95]: 728×90
+        - complementary [ref=f12e96]:
+          - generic [ref=f12e97]:
+            - generic [ref=f12e98]: Resumo
+            - generic [ref=f12e99]:
+              - generic [ref=f12e100]:
+                - generic [ref=f12e101]: Preço atual
+                - strong [ref=f12e102]: R$ 635.000,00
+              - generic [ref=f12e103]:
+                - generic [ref=f12e104]: Variação 24h
+                - strong [ref=f12e105]: "-1.05%"
+              - generic [ref=f12e106]:
+                - generic [ref=f12e107]: Volume 24h
+                - strong [ref=f12e108]: R$ 495.84M
+          - generic [ref=f12e109]:
+            - generic [ref=f12e110]: Outras Criptos
+            - generic [ref=f12e111]:
+              - link "Ξ Ethereum ETH" [ref=f12e112] [cursor=pointer]:
+                - /url: /cripto/eth
+                - generic [ref=f12e113]: Ξ
+                - generic [ref=f12e114]:
+                  - generic [ref=f12e115]: Ethereum
+                  - generic [ref=f12e116]: ETH
+              - link "◎ Solana SOL" [ref=f12e117] [cursor=pointer]:
+                - /url: /cripto/sol
+                - generic [ref=f12e118]: ◎
+                - generic [ref=f12e119]:
+                  - generic [ref=f12e120]: Solana
+                  - generic [ref=f12e121]: SOL
+              - link "✕ Ripple XRP" [ref=f12e122] [cursor=pointer]:
+                - /url: /cripto/xrp
+                - generic [ref=f12e123]: ✕
+                - generic [ref=f12e124]:
+                  - generic [ref=f12e125]: Ripple
+                  - generic [ref=f12e126]: XRP
+              - link "₳ Cardano ADA" [ref=f12e127] [cursor=pointer]:
+                - /url: /cripto/ada
+                - generic [ref=f12e128]: ₳
+                - generic [ref=f12e129]:
+                  - generic [ref=f12e130]: Cardano
+                  - generic [ref=f12e131]: ADA
+              - link "● Polkadot DOT" [ref=f12e132] [cursor=pointer]:
+                - /url: /cripto/dot
+                - generic [ref=f12e133]: ●
+                - generic [ref=f12e134]:
+                  - generic [ref=f12e135]: Polkadot
+                  - generic [ref=f12e136]: DOT
+  - alert [ref=f12e137]

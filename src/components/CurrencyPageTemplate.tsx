@@ -2,7 +2,8 @@ import FAQ from "@/components/FAQ";
 import FAQJsonLd from "@/components/FAQJsonLd";
 import CurrencyHistory from "@/components/CurrencyHistory";
 import AffiliateSection from "@/components/AffiliateSection";
-import AdSlot from "@/components/AdSlot";
+import NotificationBell from "@/components/NotificationBell";
+import NotificationInfo from "@/components/NotificationInfo";
 import type { AppCurrencyData } from "@/lib/api";
 import { currencyMap, type CurrencyCode } from "@/lib/currencies";
 import { formatCurrency, formatLastUpdate, formatPercentage } from "@/lib/formatters";
@@ -46,6 +47,12 @@ export default function CurrencyPageTemplate({ code, data }: CurrencyPageTemplat
                             Acompanhe o valor atualizado de {currency.name} frente ao Real (BRL), com histórico, contexto e ferramentas para comparar custos de câmbio.
                         </p>
                     </section>
+
+                    <NotificationInfo
+                        currencyCode={code}
+                        currencyName={currency.shortName}
+                        currencyFlag={currency.flag}
+                    />
 
                     <section className="glass-panel p-8 sm:p-12 rounded-[3rem] mb-16 relative overflow-hidden flex flex-col items-center justify-center text-center shadow-2xl shadow-emerald-900/5">
                         <div className={`absolute inset-0 bg-gradient-to-br ${currency.heroGlow} to-transparent`}></div>
@@ -97,7 +104,6 @@ export default function CurrencyPageTemplate({ code, data }: CurrencyPageTemplat
                 </div>
 
                 <aside className="xl:sticky xl:top-24 flex flex-col gap-6">
-                    <AdSlot label="Banner lateral desktop" width={300} height={250} />
                     <div className="glass-panel p-5">
                         <div className="text-xs font-bold uppercase tracking-[0.25em] text-primary">Resumo rápido</div>
                         <div className="mt-4 space-y-4 text-sm text-foreground/70">
@@ -117,10 +123,6 @@ export default function CurrencyPageTemplate({ code, data }: CurrencyPageTemplat
                     </div>
                 </aside>
             </section>
-
-            <div className="mt-12 xl:hidden flex justify-center">
-                <AdSlot label="Banner mobile entre seções" width={320} height={50} />
-            </div>
         </div>
     );
 }

@@ -6,6 +6,18 @@ import { calculateTravelTotal, convertAmountWithIof, formatDecimalInput, getPaym
 import { currencyDefinitions, currencyMap, type CurrencyCode } from "@/lib/currencies";
 import { formatCompactNumber, formatCurrency, formatLastUpdate, formatPercentage } from "@/lib/formatters";
 
+interface CryptoRate { symbol: string; name: string; priceBRL: number; }
+const CRYPTOS: CryptoRate[] = [
+    { symbol: "BTC", name: "Bitcoin", priceBRL: 0 },
+    { symbol: "ETH", name: "Ethereum", priceBRL: 0 },
+    { symbol: "SOL", name: "Solana", priceBRL: 0 },
+    { symbol: "XRP", name: "XRP", priceBRL: 0 },
+    { symbol: "ADA", name: "Cardano", priceBRL: 0 },
+    { symbol: "DOT", name: "Polkadot", priceBRL: 0 },
+];
+
+type AnyCurrency = CurrencyCode | "BTC" | "ETH" | "SOL" | "XRP" | "ADA" | "DOT";
+
 interface ConverterProps {
     initialCurrencies: Record<string, AppCurrencyData | null>;
     recentQuotes: Record<string, RecentQuotePoint[]>;
@@ -31,13 +43,39 @@ function getDefaultQuote(code: CurrencyCode): AppCurrencyData {
 }
 
 export default function CurrencyConverter({ initialCurrencies, recentQuotes }: ConverterProps) {
-    const [currencyA, setCurrencyA] = useState<CurrencyCode>("USD");
-    const [currencyB, setCurrencyB] = useState<CurrencyCode>("BRL");
+    const [currencyA, setCurrencyA] = useState<AnyCurrency>("USD");
+    const [currencyB, setCurrencyB] = useState<AnyCurrency>("BRL");
     const [valueA, setValueA] = useState("1");
     const [valueB, setValueB] = useState("");
     const [paymentType, setPaymentType] = useState<PaymentType>("card");
     const [includeIof, setIncludeIof] = useState(true);
     const [travelDestination, setTravelDestination] = useState(travelDestinations[0].countryCode);
+    const [cryptoRates, setCryptoRates] = useState<CryptoRate[]>(CRYPTOS);
+    const isCrypto = (c: string) => ["BTC", "ETH", "SOL", "XRP", "ADA", "DOT"].includes(c);
+
+    // Buscar taxas de cripto dinâmicas
+    useEffect(() => {
+        const fetchCrypto = async () => {
+            try {
+                const res = await fetch("/api/crypto/prices", { cache: "no-store" });
+                if (res.ok) {
+                    const data = await res.json();
+                    const map: Record<string, string> = {
+                        bitcoin: "BTC", ethereum: "ETH", solana: "SOL",
+                        ripple: "XRP", cardano: "ADA", polkadot: "DOT",
+                    };
+                    setCryptoRates(prev => prev.map(c => {
+                        const geckoId = Object.entries(map).find(([_, v]) => v === c.symbol)?.[0];
+                        const price = geckoId ? (data as any)[geckoId]?.brl : 0;
+                        return { ...c, priceBRL: price || c.priceBRL };
+                    }));
+                }
+            } catch {/* ignore */}
+        };
+        fetchCrypto();
+        const interval = setInterval(fetchCrypto, 60_000);
+        return () => clearInterval(interval);
+    }, []);
     const [travelAmount, setTravelAmount] = useState("100");
     const [shareFeedback, setShareFeedback] = useState<string | null>(null);
 
@@ -46,14 +84,56 @@ export default function CurrencyConverter({ initialCurrencies, recentQuotes }: C
         [initialCurrencies],
     );
 
-    const sourceCurrency = availableCurrencies.find((currency) => currency.id === currencyA) ?? getDefaultQuote(currencyA);
-    const targetCurrency = availableCurrencies.find((currency) => currency.id === currencyB) ?? getDefaultQuote(currencyB);
+    const sourceCurrency: any = (() => {
+        if (isCrypto(currencyA)) {
+            const c = cryptoRates.find(cr => cr.symbol === currencyA);
+            return { id: currencyA, name: c?.name || currencyA, bid: c?.priceBRL || 0, pctChange: 0, ask: 0, high: 0, low: 0, varBid: 0, createDate: new Date().toISOString(), flag: "", route: "" };
+        }
+        return availableCurrencies.find((currency) => currency.id === currencyA) ?? getDefaultQuote(currencyA as CurrencyCode);
+    })();
+    const targetCurrency: any = (() => {
+        if (isCrypto(currencyB)) {
+            const c = cryptoRates.find(cr => cr.symbol === currencyB);
+            return { id: currencyB, name: c?.name || currencyB, bid: c?.priceBRL || 0, pctChange: 0, ask: 0, high: 0, low: 0, varBid: 0, createDate: new Date().toISOString(), flag: "", route: "" };
+        }
+        return availableCurrencies.find((currency) => currency.id === currencyB) ?? getDefaultQuote(currencyB as CurrencyCode);
+    })();
 
-    const calculate = (amount: string, fromCode: CurrencyCode, toCode: CurrencyCode) => {
-        const fromCurrency = availableCurrencies.find((currency) => currency.id === fromCode) ?? getDefaultQuote(fromCode);
-        const toCurrency = availableCurrencies.find((currency) => currency.id === toCode) ?? getDefaultQuote(toCode);
-        const result = convertAmountWithIof(parseNumericInput(amount), fromCurrency.bid, toCurrency.bid, paymentType, includeIof);
-        return result.convertedAmount.toFixed(2);
+    const calculate = (amount: string, fromCode: AnyCurrency, toCode: AnyCurrency) => {
+        const amt = parseNumericInput(amount);
+        const aIsCrypto = isCrypto(fromCode);
+        const bIsCrypto = isCrypto(toCode);
+
+        if (aIsCrypto && bIsCrypto) {
+            // Cripto -> Cripto
+            const fromRate = cryptoRates.find(c => c.symbol === fromCode)?.priceBRL || 0;
+            const toRate = cryptoRates.find(c => c.symbol === toCode)?.priceBRL || 1;
+            if (fromRate === 0) return "0.00";
+            const brlValue = amt * fromRate;
+            return (brlValue / toRate).toFixed(8);
+        } else if (aIsCrypto) {
+            // Cripto -> Fiat
+            const rate = cryptoRates.find(c => c.symbol === fromCode)?.priceBRL || 0;
+            if (rate === 0) return "0.00";
+            const brlValue = amt * rate;
+            const target = availableCurrencies.find(c => c.id === toCode) ?? getDefaultQuote(toCode as CurrencyCode);
+            if (target.bid === 0) return brlValue.toFixed(2);
+            const fiatValue = brlValue / target.bid;
+            return fiatValue.toFixed(2);
+        } else if (bIsCrypto) {
+            // Fiat -> Cripto
+            const fromCurrency = availableCurrencies.find(c => c.id === fromCode) ?? getDefaultQuote(fromCode as CurrencyCode);
+            const brlValue = amt * fromCurrency.bid;
+            const rate = cryptoRates.find(c => c.symbol === toCode)?.priceBRL || 0;
+            if (rate === 0) return "0.00";
+            return (brlValue / rate).toFixed(8);
+        } else {
+            // Fiat -> Fiat
+            const fromCurrency = availableCurrencies.find(c => c.id === fromCode) ?? getDefaultQuote(fromCode as CurrencyCode);
+            const toCurrency = availableCurrencies.find(c => c.id === toCode) ?? getDefaultQuote(toCode as CurrencyCode);
+            const result = convertAmountWithIof(amt, fromCurrency.bid, toCurrency.bid, paymentType, includeIof);
+            return result.convertedAmount.toFixed(2);
+        }
     };
 
     useEffect(() => {
@@ -66,7 +146,17 @@ export default function CurrencyConverter({ initialCurrencies, recentQuotes }: C
     const destinationCurrency = travelDestinations.find((destination) => destination.countryCode === travelDestination)?.currencyCode ?? "USD";
     const destinationQuote = availableCurrencies.find((currency) => currency.id === destinationCurrency) ?? getDefaultQuote(destinationCurrency);
     const travelEstimate = calculateTravelTotal(parseNumericInput(travelAmount), destinationQuote, paymentType);
-    const conversionPreview = convertAmountWithIof(parseNumericInput(valueA), sourceCurrency.bid, targetCurrency.bid, paymentType, includeIof);
+    const conversionPreview: any = (() => {
+        // Não calcular IOF para cripto
+        if (isCrypto(currencyA) || isCrypto(currencyB)) {
+            return { convertedAmount: 0, iofAmount: 0, totalWithIof: 0, baseAmount: 0, totalInBrl: 0 };
+        }
+        try {
+            return convertAmountWithIof(parseNumericInput(valueA), sourceCurrency?.bid || 0, targetCurrency?.bid || 1, paymentType, includeIof);
+        } catch {
+            return { convertedAmount: 0, iofAmount: 0, totalWithIof: 0, baseAmount: 0, totalInBrl: 0 };
+        }
+    })();
 
     async function handleShare() {
         const destinationLabel = travelDestinations.find((destination) => destination.countryCode === travelDestination)?.label ?? "Destino";
@@ -141,14 +231,23 @@ export default function CurrencyConverter({ initialCurrencies, recentQuotes }: C
                                 <div className="relative w-full sm:w-1/3">
                                     <select
                                         value={currencyA}
-                                        onChange={(e) => setCurrencyA(e.target.value as CurrencyCode)}
+                                        onChange={(e) => setCurrencyA(e.target.value as AnyCurrency)}
                                         className="w-full h-full min-h-[64px] bg-foreground/5 border-none rounded-xl text-lg font-bold text-foreground py-3 pl-4 pr-12 focus:ring-2 focus:ring-primary outline-none cursor-pointer appearance-none"
                                     >
-                                        {availableCurrencies.map((currency) => (
-                                            <option key={currency.id} value={currency.id} className="bg-[#0f172a] text-white">
-                                                {currency.flag} {currency.id} - {currency.name}
-                                            </option>
-                                        ))}
+                                        <optgroup label="Moedas Fiduciárias" className="bg-[#0f172a] text-white">
+                                            {availableCurrencies.map((currency) => (
+                                                <option key={currency.id} value={currency.id} className="bg-[#0f172a] text-white">
+                                                    {currency.flag} {currency.id} - {currency.name}
+                                                </option>
+                                            ))}
+                                        </optgroup>
+                                        <optgroup label="Criptomoedas" className="bg-[#0f172a] text-white">
+                                            {cryptoRates.map((c) => (
+                                                <option key={c.symbol} value={c.symbol} className="bg-[#0f172a] text-white">
+                                                    {c.symbol} - {c.name}
+                                                </option>
+                                            ))}
+                                        </optgroup>
                                     </select>
                                 </div>
                             </div>
@@ -188,14 +287,23 @@ export default function CurrencyConverter({ initialCurrencies, recentQuotes }: C
                                 <div className="relative w-full sm:w-1/3">
                                     <select
                                         value={currencyB}
-                                        onChange={(e) => setCurrencyB(e.target.value as CurrencyCode)}
+                                        onChange={(e) => setCurrencyB(e.target.value as AnyCurrency)}
                                         className="w-full h-full min-h-[64px] bg-foreground/5 border-none rounded-xl text-lg font-bold text-foreground py-3 pl-4 pr-12 focus:ring-2 focus:ring-primary outline-none cursor-pointer appearance-none"
                                     >
-                                        {availableCurrencies.map((currency) => (
-                                            <option key={currency.id} value={currency.id} className="bg-[#0f172a] text-white">
-                                                {currency.flag} {currency.id} - {currency.name}
-                                            </option>
-                                        ))}
+                                        <optgroup label="Moedas Fiduciárias" className="bg-[#0f172a] text-white">
+                                            {availableCurrencies.map((currency) => (
+                                                <option key={currency.id} value={currency.id} className="bg-[#0f172a] text-white">
+                                                    {currency.flag} {currency.id} - {currency.name}
+                                                </option>
+                                            ))}
+                                        </optgroup>
+                                        <optgroup label="Criptomoedas" className="bg-[#0f172a] text-white">
+                                            {cryptoRates.map((c) => (
+                                                <option key={c.symbol} value={c.symbol} className="bg-[#0f172a] text-white">
+                                                    {c.symbol} - {c.name}
+                                                </option>
+                                            ))}
+                                        </optgroup>
                                     </select>
                                 </div>
                             </div>

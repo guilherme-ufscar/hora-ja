@@ -1,32 +1,14 @@
 @import "tailwindcss";
 
+/* Forçar tema escuro por padrão */
 :root {
-  /* Cores base */
-  --background: #f5f7fa;
-  /* Branco gelo */
-  --foreground: #1e293b;
-  /* Grafite suave */
+  --background: #0f172a;
+  /* Fundo grafite escuro */
+  --foreground: #f8fafc;
+  /* Texto claro */
 
-  /* Cores de acento */
-  --primary: #10b981;
-  /* Esmeralda */
-  --primary-hover: #059669;
-
-  /* Card */
-  --card-bg: rgba(255, 255, 255, 0.7);
-  --card-border: rgba(255, 255, 255, 0.5);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f172a;
-    /* Fundo grafite escuro */
-    --foreground: #f8fafc;
-    /* Texto claro */
-
-    --card-bg: rgba(30, 41, 59, 0.6);
-    --card-border: rgba(255, 255, 255, 0.1);
-  }
+  --card-bg: rgba(30, 41, 59, 0.6);
+  --card-border: rgba(255, 255, 255, 0.1);
 }
 
 @theme inline {

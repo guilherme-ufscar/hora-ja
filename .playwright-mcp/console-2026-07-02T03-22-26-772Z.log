@@ -1,0 +1,3 @@
+[     150ms] [WARNING] AdSense head tag doesn't support data-nscript attribute. @ https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3621297766213698:222
+[     201ms] [WARNING] Manifest: property 'id' ignored, should be same origin as document. @ http://localhost:10002/manifest.webmanifest:0
+[   16835ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:10002/api/notifications:0

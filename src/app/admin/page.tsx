@@ -25,7 +25,15 @@ interface Config {
     rss_sources: string;
 }
 
-type Tab = "articles" | "config" | "pipeline";
+interface Lead {
+    id: number;
+    email: string;
+    name: string | null;
+    ip_address: string | null;
+    created_at: string;
+}
+
+type Tab = "articles" | "config" | "pipeline" | "leads";
 
 export default function AdminPage() {
     const [authed, setAuthed] = useState(false);
@@ -55,6 +63,10 @@ export default function AdminPage() {
     const [pipelineProgress, setPipelineProgress] = useState<{ index: number; total: number; log: { title: string; status: "ok" | "error" | "skip" }[] } | null>(null);
     const [pipelineDone, setPipelineDone] = useState<{ processed: number; skipped: number; errors: number } | null>(null);
 
+    // leads state
+    const [leads, setLeads] = useState<Lead[]>([]);
+    const [leadsLoading, setLeadsLoading] = useState(false);
+
     const fetchArticles = useCallback(async () => {
         setLoading(true);
         try {
@@ -76,10 +88,24 @@ export default function AdminPage() {
         if (res.ok) setConfig(await res.json());
     }, []);
 
+    const fetchLeads = useCallback(async () => {
+        setLeadsLoading(true);
+        try {
+            const res = await fetch("/api/leads");
+            if (res.ok) {
+                const data = await res.json();
+                setLeads(data.leads || []);
+            }
+        } finally {
+            setLeadsLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         if (authed && tab === "articles") fetchArticles();
         if (authed && tab === "config") fetchConfig();
-    }, [authed, tab, fetchArticles, fetchConfig]);
+        if (authed && tab === "leads") fetchLeads();
+    }, [authed, tab, fetchArticles, fetchConfig, fetchLeads]);
 
     async function login() {
         setLoginError("");
@@ -269,9 +295,9 @@ export default function AdminPage() {
             </div>
 
             <div className="flex gap-2 mb-8 border-b border-card-border">
-                {(["articles", "pipeline", "config"] as Tab[]).map(t => (
+                {(["articles", "pipeline", "config", "leads"] as Tab[]).map(t => (
                     <button key={t} onClick={() => setTab(t)} className={`px-5 py-3 text-sm font-bold capitalize transition-colors border-b-2 -mb-px ${tab === t ? "border-primary text-primary" : "border-transparent text-foreground/50 hover:text-foreground"}`}>
-                        {t === "articles" ? "Notícias" : t === "pipeline" ? "Pipeline" : "Configurações"}
+                        {t === "articles" ? "Notícias" : t === "pipeline" ? "Pipeline" : t === "leads" ? "Leads" : "Configurações"}
                     </button>
                 ))}
             </div>
@@ -433,6 +459,68 @@ export default function AdminPage() {
                         <button onClick={saveConfig} className="self-start px-8 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-hover">
                             {configSaved ? "Salvo!" : "Salvar Configurações"}
                         </button>
+                    </div>
+                </div>
+            )}
+
+            {tab === "leads" && (
+                <div className="flex flex-col gap-6">
+                    <div className="glass-panel p-8 flex flex-col gap-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="text-xl font-black text-foreground">Leads Capturados</h2>
+                                <p className="text-sm text-foreground/50 mt-1">{leads.length} email{leads.length !== 1 ? "s" : ""} cadastrado{leads.length !== 1 ? "s" : ""}</p>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    const csv = [
+                                        "Email,Nome,IP,Data",
+                                        ...leads.map(l => `"${l.email}","${l.name || ""}","${l.ip_address || ""}","${new Date(l.created_at).toLocaleString("pt-BR")}"`)
+                                    ].join("\n");
+                                    const blob = new Blob([csv], { type: "text/csv" });
+                                    const url = URL.createObjectURL(blob);
+                                    const a = document.createElement("a");
+                                    a.href = url;
+                                    a.download = `leads-${new Date().toISOString().split("T")[0]}.csv`;
+                                    a.click();
+                                }}
+                                className="px-5 py-2 rounded-xl bg-emerald-500/10 text-emerald-600 font-bold text-sm hover:bg-emerald-500/20"
+                            >
+                                Exportar CSV
+                            </button>
+                        </div>
+
+                        {leadsLoading ? (
+                            <div className="p-12 text-center text-foreground/40">Carregando...</div>
+                        ) : leads.length === 0 ? (
+                            <div className="p-12 text-center text-foreground/40">
+                                <p className="text-lg">Nenhum lead cadastrado ainda.</p>
+                                <p className="text-sm mt-2">Os emails capturados aparecerão aqui.</p>
+                            </div>
+                        ) : (
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-sm">
+                                    <thead>
+                                        <tr className="border-b border-card-border">
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-wider text-foreground/50">Email</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-wider text-foreground/50">Nome</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-wider text-foreground/50">IP</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-wider text-foreground/50">Data</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {leads.map(lead => (
+                                            <tr key={lead.id} className="border-b border-card-border/50 hover:bg-card-bg/30">
+                                                <td className="py-3 px-4 font-medium text-foreground">{lead.email}</td>
+                                                <td className="py-3 px-4 text-foreground/70">{lead.name || "—"}</td>
+                                                <td className="py-3 px-4 text-foreground/50 font-mono text-xs">{lead.ip_address || "—"}</td>
+                                                <td className="py-3 px-4 text-foreground/50">{new Date(lead.created_at).toLocaleString("pt-BR")}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
