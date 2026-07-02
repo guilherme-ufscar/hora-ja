@@ -71,36 +71,51 @@ export default function CryptoPageTemplate({ symbol }: CryptoPageTemplateProps) 
     const [cryptoData, setCryptoData] = useState<CryptoData | null>(null);
     const [chartData, setChartData] = useState<ChartData | null>(null);
     const [loading, setLoading] = useState(true);
+    const [period, setPeriod] = useState<"7" | "30" | "90" | "365">("30");
+    const [periodStats, setPeriodStats] = useState<{ low: number; high: number; change: number } | null>(null);
 
     // Buscar dados reais da API CoinGecko via proxy interno
     const fetchData = useCallback(async () => {
         setLoading(true);
 
         try {
-            const res = await fetch(`/api/crypto/prices?action=history&symbol=${symbol}`, {
+            const days = period;
+            const res = await fetch(`/api/crypto/prices?action=history&symbol=${symbol}&days=${days}`, {
                 cache: "no-store",
             });
             if (!res.ok) throw new Error("Erro ao buscar histórico");
             const history = await res.json();
 
-            const change = (history.prices[history.prices.length - 1] - history.prices[0]) / history.prices[0] * 100;
-            const last30 = history.prices.slice(-30);
+            const lastIdx = history.prices.length - 1;
+            const change = (history.prices[lastIdx] - history.prices[0]) / history.prices[0] * 100;
+            const periodPrices = history.prices;
 
             setCryptoData({
                 symbol,
                 name: config.name,
-                price: last30[last30.length - 1],
+                price: periodPrices[lastIdx],
                 change24h: change,
-                high24h: Math.max(...last30),
-                low24h: Math.min(...last30),
+                high24h: Math.max(...periodPrices.slice(-Math.min(30, periodPrices.length))),
+                low24h: Math.min(...periodPrices.slice(-Math.min(30, periodPrices.length))),
                 volume24h: 0,
             });
 
-            // Amostra de 30 pontos para o gráfico
-            const step = Math.max(1, Math.floor(history.prices.length / 30));
+            // Calcular estatísticas do período
+            setPeriodStats({
+                low: Math.min(...periodPrices),
+                high: Math.max(...periodPrices),
+                change,
+            });
+
+            // Amostra de até 60 pontos para o gráfico
+            const targetPoints = 60;
+            const step = Math.max(1, Math.floor(history.prices.length / targetPoints));
             const sample: { label: string; price: number }[] = [];
             for (let i = 0; i < history.prices.length; i += step) {
                 sample.push({ label: history.labels[i], price: history.prices[i] });
+            }
+            if (sample[sample.length - 1].label !== history.labels[lastIdx]) {
+                sample.push({ label: history.labels[lastIdx], price: history.prices[lastIdx] });
             }
 
             setChartData({
@@ -120,22 +135,28 @@ export default function CryptoPageTemplate({ symbol }: CryptoPageTemplateProps) 
             const price = basePrice[symbol] || 1000;
             const labels: string[] = [];
             const prices: number[] = [];
-            for (let i = 30; i >= 0; i--) {
+            const daysNum = parseInt(period);
+            for (let i = daysNum; i >= 0; i--) {
                 const date = new Date();
                 date.setDate(date.getDate() - i);
                 labels.push(date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }));
                 prices.push(price * (0.9 + Math.random() * 0.2));
             }
             setCryptoData({
-                symbol, name: config.name, price,
+                symbol, name: config.name, price: prices[prices.length - 1],
                 change24h: (Math.random() - 0.5) * 10,
-                high24h: price * 1.02, low24h: price * 0.98, volume24h: 0,
+                high24h: Math.max(...prices.slice(-30)), low24h: Math.min(...prices.slice(-30)), volume24h: 0,
+            });
+            setPeriodStats({
+                low: Math.min(...prices),
+                high: Math.max(...prices),
+                change: (prices[prices.length - 1] - prices[0]) / prices[0] * 100,
             });
             setChartData({ labels, datasets: [{ label: config.name, data: prices, color: "#10b981" }] });
         } finally {
             setLoading(false);
         }
-    }, [symbol, config.name]);
+    }, [symbol, config.name, period]);
 
     useEffect(() => {
         fetchData();
@@ -233,30 +254,68 @@ export default function CryptoPageTemplate({ symbol }: CryptoPageTemplateProps) 
                     </section>
 
                     <section className="mb-16">
-                        <h2 className="text-2xl font-bold tracking-tight text-foreground mb-6">Histórico de preço (30 dias)</h2>
-                        <div className="glass-panel p-6 rounded-[2rem]">
-                            {loading ? (
-                                <div className="h-64 bg-card-bg rounded-xl animate-pulse"></div>
-                            ) : chartData ? (
-                                <div className="h-64 flex items-end gap-1">
-                                    {chartData.datasets[0].data.map((price, i) => {
-                                        const max = Math.max(...chartData.datasets[0].data);
-                                        const min = Math.min(...chartData.datasets[0].data);
-                                        const height = ((price - min) / (max - min)) * 100;
-                                        return (
-                                            <div
-                                                key={i}
-                                                className="flex-1 bg-primary/50 hover:bg-primary transition-colors rounded-t-sm"
-                                                style={{ height: `${Math.max(height, 5)}%` }}
-                                                title={`${chartData.labels[i]}: ${formatPrice(price)}`}
-                                            />
-                                        );
-                                    })}
+                        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+                            <div>
+                                <h2 className="text-2xl font-bold tracking-tight text-foreground">Histórico de preço</h2>
+                                <p className="text-sm text-foreground/60 mt-1">Compare o comportamento em diferentes janelas de tempo.</p>
+                            </div>
+                            <div className="flex gap-2 p-1 bg-card-bg rounded-xl">
+                                {(["7", "30", "90", "365"] as const).map((d) => (
+                                    <button
+                                        key={d}
+                                        onClick={() => setPeriod(d)}
+                                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${period === d ? "bg-primary text-white" : "text-foreground/60 hover:text-foreground"}`}
+                                    >
+                                        {d === "7" ? "7 dias" : d === "30" ? "30 dias" : d === "90" ? "90 dias" : "365 dias"}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_0.6fr] gap-4">
+                            <div className="glass-panel p-6 rounded-[2rem]">
+                                {loading ? (
+                                    <div className="h-64 bg-card-bg rounded-xl animate-pulse"></div>
+                                ) : chartData ? (
+                                    <div className="h-64 flex items-end gap-1">
+                                        {chartData.datasets[0].data.map((price, i) => {
+                                            const max = Math.max(...chartData.datasets[0].data);
+                                            const min = Math.min(...chartData.datasets[0].data);
+                                            const height = ((price - min) / (max - min)) * 100;
+                                            return (
+                                                <div
+                                                    key={i}
+                                                    className="flex-1 bg-primary/50 hover:bg-primary transition-colors rounded-t-sm min-w-[2px]"
+                                                    style={{ height: `${Math.max(height, 5)}%` }}
+                                                    title={`${chartData.labels[i]}: ${formatPrice(price)}`}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                ) : null}
+                                <div className="flex justify-between mt-4 text-xs text-foreground/40">
+                                    <span>{chartData?.labels[0] || "início"}</span>
+                                    <span>{chartData?.labels[chartData.labels.length - 1] || "hoje"}</span>
                                 </div>
-                            ) : null}
-                            <div className="flex justify-between mt-4 text-xs text-foreground/40">
-                                <span>30 dias atrás</span>
-                                <span>Hoje</span>
+                            </div>
+
+                            <div className="glass-panel p-5 rounded-[2rem]">
+                                <div className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-4">Resumo do período</div>
+                                <div className="space-y-4 text-sm text-foreground/70">
+                                    <div>
+                                        <div className="text-foreground/50">Variação no período</div>
+                                        <strong className={`text-xl ${(periodStats?.change || 0) >= 0 ? "text-emerald-500" : "text-rose-500"}`}>
+                                            {(periodStats?.change || 0) >= 0 ? "+" : ""}{periodStats?.change.toFixed(2)}%
+                                        </strong>
+                                    </div>
+                                    <div>
+                                        <div className="text-foreground/50">Menor cotação</div>
+                                        <strong className="text-base text-foreground">{formatPrice(periodStats?.low || 0)}</strong>
+                                    </div>
+                                    <div>
+                                        <div className="text-foreground/50">Maior cotação</div>
+                                        <strong className="text-base text-foreground">{formatPrice(periodStats?.high || 0)}</strong>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>

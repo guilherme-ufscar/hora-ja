@@ -37,11 +37,11 @@ async function fetchCryptoPrices() {
     return res.json();
 }
 
-async function fetchCryptoHistory(symbol: string) {
+async function fetchCryptoHistory(symbol: string, days: number = 30) {
     const id = COINGECKO_IDS[symbol];
     if (!id) throw new Error(`Symbol não suportado: ${symbol}`);
 
-    const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=brl&days=30`;
+    const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=brl&days=${days}`;
 
     const res = await fetch(url, {
         headers: { "Accept": "application/json" },
@@ -64,10 +64,11 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get("action");
     const symbol = searchParams.get("symbol");
+    const days = parseInt(searchParams.get("days") || "30", 10);
 
     try {
         if (action === "history" && symbol) {
-            const history = await fetchCryptoHistory(symbol.toUpperCase());
+            const history = await fetchCryptoHistory(symbol.toUpperCase(), days);
             return NextResponse.json(history, {
                 headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=60" },
             });
