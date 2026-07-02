@@ -1,0 +1,155 @@
+- generic [active] [ref=f108e1]:
+  - generic [ref=f108e2]:
+    - banner [ref=f108e3]:
+      - generic [ref=f108e4]:
+        - link "HoraJá Cambio" [ref=f108e5] [cursor=pointer]:
+          - /url: /
+          - img [ref=f108e7]
+          - generic [ref=f108e10]: HoraJá Cambio
+        - navigation [ref=f108e11]:
+          - link "Home" [ref=f108e12] [cursor=pointer]:
+            - /url: /
+          - link "Notícias" [ref=f108e13] [cursor=pointer]:
+            - /url: /noticias
+          - link "Cripto" [ref=f108e14] [cursor=pointer]:
+            - /url: /cripto
+          - link "₿ BTC" [ref=f108e15] [cursor=pointer]:
+            - /url: /cripto/btc
+          - link "Ξ ETH" [ref=f108e16] [cursor=pointer]:
+            - /url: /cripto/eth
+          - link "◎ SOL" [ref=f108e17] [cursor=pointer]:
+            - /url: /cripto/sol
+          - link "Dólar" [ref=f108e18] [cursor=pointer]:
+            - /url: /dolar
+          - link "Euro" [ref=f108e19] [cursor=pointer]:
+            - /url: /euro
+          - link "Libra" [ref=f108e20] [cursor=pointer]:
+            - /url: /libra
+          - link "Peso ARS" [ref=f108e21] [cursor=pointer]:
+            - /url: /peso-argentino
+          - link "Conversor" [ref=f108e22] [cursor=pointer]:
+            - /url: /conversor
+    - main [ref=f108e23]:
+      - generic [ref=f108e25]:
+        - generic [ref=f108e26]:
+          - generic [ref=f108e27]:
+            - generic [ref=f108e31]: Criptoativo
+            - heading "₿ Bitcoin" [level=1] [ref=f108e32]
+            - paragraph [ref=f108e33]: A primeira e mais valiosa criptomoeda do mundo, criada em 2009 por um desconhecido sob o pseudônimo Satoshi Nakamoto.
+          - generic [ref=f108e35]:
+            - img [ref=f108e37]
+            - generic [ref=f108e40]:
+              - heading "₿ Receba alertas de Bitcoin" [level=3] [ref=f108e41]
+              - paragraph [ref=f108e42]: Nunca perca o melhor momento para comprar ou vender! Configure notificações e receba alertas por email ou WhatsApp quando Bitcoin atingir o valor que você deseja.
+              - generic [ref=f108e43]:
+                - generic [ref=f108e44]:
+                  - img [ref=f108e46]
+                  - generic [ref=f108e49]:
+                    - generic [ref=f108e50]: Notificações por Email
+                    - generic [ref=f108e51]: Receba alertas diretamente na sua caixa de entrada
+                - generic [ref=f108e52]:
+                  - img [ref=f108e54]
+                  - generic [ref=f108e56]:
+                    - generic [ref=f108e57]: Notificações por WhatsApp
+                    - generic [ref=f108e58]: Alertas instantâneos no seu celular
+              - generic [ref=f108e59]:
+                - heading "Como funciona?" [level=4] [ref=f108e60]
+                - list [ref=f108e61]:
+                  - listitem [ref=f108e62]: "• Configure o valor desejado (ex: avisar quando BTC atingir R$ 6,00)"
+                  - listitem [ref=f108e63]: • Escolha receber por email ou WhatsApp
+                  - listitem [ref=f108e64]: • Receba o alerta automaticamente quando a condição for atingida
+              - button "Notificar" [ref=f108e66]:
+                - img [ref=f108e67]
+                - generic [ref=f108e70]: Notificar
+          - generic [ref=f108e73]:
+            - generic [ref=f108e74]:
+              - generic [ref=f108e75]: Valor em BRL
+              - generic [ref=f108e77]:
+                - generic [ref=f108e78]: ↑ 0.00%
+                - generic [ref=f108e79]: 24h
+            - generic [ref=f108e81]:
+              - generic [ref=f108e82]: Máxima 24h
+              - generic [ref=f108e83]: R$ 0,0000
+              - generic [ref=f108e84]: Mínima 24h
+              - generic [ref=f108e85]: R$ 0,0000
+          - generic [ref=f108e86]:
+            - generic [ref=f108e87]:
+              - generic [ref=f108e88]:
+                - heading "Histórico de preço" [level=2] [ref=f108e89]
+                - paragraph [ref=f108e90]: Compare o comportamento em diferentes janelas de tempo.
+              - generic [ref=f108e91]:
+                - button "7 dias" [ref=f108e92]
+                - button "30 dias" [ref=f108e93]
+                - button "90 dias" [ref=f108e94]
+                - button "365 dias" [ref=f108e95]
+            - generic [ref=f108e96]:
+              - generic [ref=f108e99]:
+                - generic [ref=f108e100]: início
+                - generic [ref=f108e101]: hoje
+              - generic [ref=f108e102]:
+                - generic [ref=f108e103]: Resumo do período
+                - generic [ref=f108e104]:
+                  - generic [ref=f108e105]:
+                    - generic [ref=f108e106]: Variação no período
+                    - strong [ref=f108e107]: +%
+                  - generic [ref=f108e108]:
+                    - generic [ref=f108e109]: Menor cotação
+                    - strong [ref=f108e110]: R$ 0,0000
+                  - generic [ref=f108e111]:
+                    - generic [ref=f108e112]: Maior cotação
+                    - strong [ref=f108e113]: R$ 0,0000
+          - generic [ref=f108e114]:
+            - heading "Sobre o Bitcoin" [level=2] [ref=f108e115]
+            - paragraph [ref=f108e116]: O Bitcoin (BTC) é uma das principais criptomoedas do mercado. O mercado de criptoativos opera 24 horas por dia, 7 dias por semana, o que significa que os preços podem mudar a qualquer momento.
+            - paragraph [ref=f108e117]: Utilizamos dados de APIs confiáveis para manter as cotações sempre atualizadas. Lembre-se que criptomoedas são ativos de alto risco e volatilidade, e o valor pode oscilar significativamente em curtos períodos de tempo.
+          - generic [ref=f108e119]:
+            - generic [ref=f108e120]: Espaço reservado
+            - strong [ref=f108e121]: Parceiros para comparar antes de fechar a operação
+            - generic [ref=f108e122]: 728×90
+        - complementary [ref=f108e123]:
+          - generic [ref=f108e124]:
+            - generic [ref=f108e125]: Resumo
+            - generic [ref=f108e126]:
+              - generic [ref=f108e127]:
+                - generic [ref=f108e128]: Preço atual
+                - strong [ref=f108e129]: R$ 0,0000
+              - generic [ref=f108e130]:
+                - generic [ref=f108e131]: Variação 24h
+                - strong [ref=f108e132]: +%
+              - generic [ref=f108e133]:
+                - generic [ref=f108e134]: Volume 24h
+                - strong [ref=f108e135]: R$ 0.00
+          - generic [ref=f108e136]:
+            - generic [ref=f108e137]: Outras Criptos
+            - generic [ref=f108e138]:
+              - link "Ξ Ethereum ETH" [ref=f108e139] [cursor=pointer]:
+                - /url: /cripto/eth
+                - generic [ref=f108e140]: Ξ
+                - generic [ref=f108e141]:
+                  - generic [ref=f108e142]: Ethereum
+                  - generic [ref=f108e143]: ETH
+              - link "◎ Solana SOL" [ref=f108e144] [cursor=pointer]:
+                - /url: /cripto/sol
+                - generic [ref=f108e145]: ◎
+                - generic [ref=f108e146]:
+                  - generic [ref=f108e147]: Solana
+                  - generic [ref=f108e148]: SOL
+              - link "✕ Ripple XRP" [ref=f108e149] [cursor=pointer]:
+                - /url: /cripto/xrp
+                - generic [ref=f108e150]: ✕
+                - generic [ref=f108e151]:
+                  - generic [ref=f108e152]: Ripple
+                  - generic [ref=f108e153]: XRP
+              - link "₳ Cardano ADA" [ref=f108e154] [cursor=pointer]:
+                - /url: /cripto/ada
+                - generic [ref=f108e155]: ₳
+                - generic [ref=f108e156]:
+                  - generic [ref=f108e157]: Cardano
+                  - generic [ref=f108e158]: ADA
+              - link "● Polkadot DOT" [ref=f108e159] [cursor=pointer]:
+                - /url: /cripto/dot
+                - generic [ref=f108e160]: ●
+                - generic [ref=f108e161]:
+                  - generic [ref=f108e162]: Polkadot
+                  - generic [ref=f108e163]: DOT
+  - alert [ref=f108e164]

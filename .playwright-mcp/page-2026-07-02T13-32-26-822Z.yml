@@ -1,0 +1,219 @@
+- generic [ref=f108e1]:
+  - generic [ref=f108e2]:
+    - banner [ref=f108e3]:
+      - generic [ref=f108e4]:
+        - link "HoraJá Cambio" [ref=f108e5] [cursor=pointer]:
+          - /url: /
+          - img [ref=f108e7]
+          - generic [ref=f108e10]: HoraJá Cambio
+        - navigation [ref=f108e11]:
+          - link "Home" [ref=f108e12] [cursor=pointer]:
+            - /url: /
+          - link "Notícias" [ref=f108e13] [cursor=pointer]:
+            - /url: /noticias
+          - link "Cripto" [ref=f108e14] [cursor=pointer]:
+            - /url: /cripto
+          - link "₿ BTC" [ref=f108e15] [cursor=pointer]:
+            - /url: /cripto/btc
+          - link "Ξ ETH" [ref=f108e16] [cursor=pointer]:
+            - /url: /cripto/eth
+          - link "◎ SOL" [ref=f108e17] [cursor=pointer]:
+            - /url: /cripto/sol
+          - link "Dólar" [ref=f108e18] [cursor=pointer]:
+            - /url: /dolar
+          - link "Euro" [ref=f108e19] [cursor=pointer]:
+            - /url: /euro
+          - link "Libra" [ref=f108e20] [cursor=pointer]:
+            - /url: /libra
+          - link "Peso ARS" [ref=f108e21] [cursor=pointer]:
+            - /url: /peso-argentino
+          - link "Conversor" [ref=f108e22] [cursor=pointer]:
+            - /url: /conversor
+    - main [ref=f108e23]:
+      - generic [ref=f108e25]:
+        - generic [ref=f108e26]:
+          - generic [ref=f108e27]:
+            - generic [ref=f108e31]: Criptoativo
+            - heading "₿ Bitcoin" [level=1] [ref=f108e32]
+            - paragraph [ref=f108e33]: A primeira e mais valiosa criptomoeda do mundo, criada em 2009 por um desconhecido sob o pseudônimo Satoshi Nakamoto.
+          - generic [ref=f108e35]:
+            - img [ref=f108e37]
+            - generic [ref=f108e40]:
+              - heading "₿ Receba alertas de Bitcoin" [level=3] [ref=f108e41]
+              - paragraph [ref=f108e42]: Nunca perca o melhor momento para comprar ou vender! Configure notificações e receba alertas por email ou WhatsApp quando Bitcoin atingir o valor que você deseja.
+              - generic [ref=f108e43]:
+                - generic [ref=f108e44]:
+                  - img [ref=f108e46]
+                  - generic [ref=f108e49]:
+                    - generic [ref=f108e50]: Notificações por Email
+                    - generic [ref=f108e51]: Receba alertas diretamente na sua caixa de entrada
+                - generic [ref=f108e52]:
+                  - img [ref=f108e54]
+                  - generic [ref=f108e56]:
+                    - generic [ref=f108e57]: Notificações por WhatsApp
+                    - generic [ref=f108e58]: Alertas instantâneos no seu celular
+              - generic [ref=f108e59]:
+                - heading "Como funciona?" [level=4] [ref=f108e60]
+                - list [ref=f108e61]:
+                  - listitem [ref=f108e62]: "• Configure o valor desejado (ex: avisar quando BTC atingir R$ 6,00)"
+                  - listitem [ref=f108e63]: • Escolha receber por email ou WhatsApp
+                  - listitem [ref=f108e64]: • Receba o alerta automaticamente quando a condição for atingida
+              - button "Notificar" [ref=f108e66]:
+                - img [ref=f108e67]
+                - generic [ref=f108e70]: Notificar
+          - generic [ref=f108e73]:
+            - generic [ref=f108e74]:
+              - generic [ref=f108e75]: Valor em BRL
+              - generic [ref=f108e76]: R$ 321.202,09
+              - generic [ref=f108e77]:
+                - generic [ref=f108e78]: ↓ 7.00%
+                - generic [ref=f108e79]: 24h
+            - generic [ref=f108e81]:
+              - generic [ref=f108e82]: Máxima 24h
+              - generic [ref=f108e83]: R$ 321.202,09
+              - generic [ref=f108e84]: Mínima 24h
+              - generic [ref=f108e85]: R$ 302.226,88
+          - generic [ref=f108e86]:
+            - generic [ref=f108e87]:
+              - generic [ref=f108e88]:
+                - heading "Histórico de preço" [level=2] [ref=f108e89]
+                - paragraph [ref=f108e90]: Compare o comportamento em diferentes janelas de tempo.
+              - generic [ref=f108e91]:
+                - button "7 dias" [ref=f108e92]
+                - button "30 dias" [active] [ref=f108e93]
+                - button "90 dias" [ref=f108e94]
+                - button "365 dias" [ref=f108e95]
+            - generic [ref=f108e96]:
+              - generic [ref=f108e97]:
+                - generic [ref=f108e98]:
+                  - 'generic "02 de jun.: R$ 345.360,53" [ref=f108e165]'
+                  - 'generic "03 de jun.: R$ 335.631,10" [ref=f108e166]'
+                  - 'generic "03 de jun.: R$ 338.251,71" [ref=f108e167]'
+                  - 'generic "04 de jun.: R$ 315.487,79" [ref=f108e168]'
+                  - 'generic "04 de jun.: R$ 325.265,76" [ref=f108e169]'
+                  - 'generic "05 de jun.: R$ 320.648,39" [ref=f108e170]'
+                  - 'generic "05 de jun.: R$ 311.569,20" [ref=f108e171]'
+                  - 'generic "06 de jun.: R$ 316.313,31" [ref=f108e172]'
+                  - 'generic "06 de jun.: R$ 314.773,99" [ref=f108e173]'
+                  - 'generic "07 de jun.: R$ 318.275,55" [ref=f108e174]'
+                  - 'generic "07 de jun.: R$ 319.501,85" [ref=f108e175]'
+                  - 'generic "08 de jun.: R$ 327.062,05" [ref=f108e176]'
+                  - 'generic "08 de jun.: R$ 330.064,56" [ref=f108e177]'
+                  - 'generic "09 de jun.: R$ 326.661,61" [ref=f108e178]'
+                  - 'generic "09 de jun.: R$ 322.883,62" [ref=f108e179]'
+                  - 'generic "10 de jun.: R$ 320.197,69" [ref=f108e180]'
+                  - 'generic "10 de jun.: R$ 321.519,81" [ref=f108e181]'
+                  - 'generic "11 de jun.: R$ 322.904,96" [ref=f108e182]'
+                  - 'generic "11 de jun.: R$ 324.825,15" [ref=f108e183]'
+                  - 'generic "12 de jun.: R$ 324.079,16" [ref=f108e184]'
+                  - 'generic "12 de jun.: R$ 322.013,85" [ref=f108e185]'
+                  - 'generic "13 de jun.: R$ 323.703,82" [ref=f108e186]'
+                  - 'generic "13 de jun.: R$ 325.112,30" [ref=f108e187]'
+                  - 'generic "14 de jun.: R$ 327.654,70" [ref=f108e188]'
+                  - 'generic "14 de jun.: R$ 326.267,13" [ref=f108e189]'
+                  - 'generic "15 de jun.: R$ 331.537,62" [ref=f108e190]'
+                  - 'generic "15 de jun.: R$ 335.598,23" [ref=f108e191]'
+                  - 'generic "16 de jun.: R$ 336.580,02" [ref=f108e192]'
+                  - 'generic "16 de jun.: R$ 336.052,17" [ref=f108e193]'
+                  - 'generic "17 de jun.: R$ 336.180,20" [ref=f108e194]'
+                  - 'generic "17 de jun.: R$ 331.395,84" [ref=f108e195]'
+                  - 'generic "18 de jun.: R$ 330.513,86" [ref=f108e196]'
+                  - 'generic "18 de jun.: R$ 331.834,72" [ref=f108e197]'
+                  - 'generic "19 de jun.: R$ 326.340,22" [ref=f108e198]'
+                  - 'generic "19 de jun.: R$ 325.128,87" [ref=f108e199]'
+                  - 'generic "20 de jun.: R$ 327.182,75" [ref=f108e200]'
+                  - 'generic "20 de jun.: R$ 326.417,91" [ref=f108e201]'
+                  - 'generic "21 de jun.: R$ 330.687,32" [ref=f108e202]'
+                  - 'generic "21 de jun.: R$ 329.912,58" [ref=f108e203]'
+                  - 'generic "22 de jun.: R$ 332.048,56" [ref=f108e204]'
+                  - 'generic "22 de jun.: R$ 337.916,38" [ref=f108e205]'
+                  - 'generic "23 de jun.: R$ 330.591,00" [ref=f108e206]'
+                  - 'generic "23 de jun.: R$ 323.599,88" [ref=f108e207]'
+                  - 'generic "24 de jun.: R$ 326.894,14" [ref=f108e208]'
+                  - 'generic "24 de jun.: R$ 319.544,59" [ref=f108e209]'
+                  - 'generic "25 de jun.: R$ 316.942,99" [ref=f108e210]'
+                  - 'generic "25 de jun.: R$ 303.669,21" [ref=f108e211]'
+                  - 'generic "26 de jun.: R$ 308.123,91" [ref=f108e212]'
+                  - 'generic "26 de jun.: R$ 311.834,19" [ref=f108e213]'
+                  - 'generic "27 de jun.: R$ 310.559,51" [ref=f108e214]'
+                  - 'generic "27 de jun.: R$ 313.622,91" [ref=f108e215]'
+                  - 'generic "28 de jun.: R$ 311.826,84" [ref=f108e216]'
+                  - 'generic "28 de jun.: R$ 311.132,92" [ref=f108e217]'
+                  - 'generic "29 de jun.: R$ 307.093,02" [ref=f108e218]'
+                  - 'generic "29 de jun.: R$ 308.047,23" [ref=f108e219]'
+                  - 'generic "30 de jun.: R$ 310.564,57" [ref=f108e220]'
+                  - 'generic "30 de jun.: R$ 304.360,70" [ref=f108e221]'
+                  - 'generic "01 de jul.: R$ 303.845,11" [ref=f108e222]'
+                  - 'generic "01 de jul.: R$ 308.101,01" [ref=f108e223]'
+                  - 'generic "02 de jul.: R$ 313.778,40" [ref=f108e224]'
+                  - 'generic "02 de jul.: R$ 321.202,09" [ref=f108e225]'
+                - generic [ref=f108e99]:
+                  - generic [ref=f108e100]: 02 de jun.
+                  - generic [ref=f108e101]: 02 de jul.
+              - generic [ref=f108e102]:
+                - generic [ref=f108e103]: Resumo do período
+                - generic [ref=f108e104]:
+                  - generic [ref=f108e105]:
+                    - generic [ref=f108e106]: Variação no período
+                    - strong [ref=f108e107]: "-7.00%"
+                  - generic [ref=f108e108]:
+                    - generic [ref=f108e109]: Menor cotação
+                    - strong [ref=f108e110]: R$ 302.218,52
+                  - generic [ref=f108e111]:
+                    - generic [ref=f108e112]: Maior cotação
+                    - strong [ref=f108e113]: R$ 345.360,53
+          - generic [ref=f108e114]:
+            - heading "Sobre o Bitcoin" [level=2] [ref=f108e115]
+            - paragraph [ref=f108e116]: O Bitcoin (BTC) é uma das principais criptomoedas do mercado. O mercado de criptoativos opera 24 horas por dia, 7 dias por semana, o que significa que os preços podem mudar a qualquer momento.
+            - paragraph [ref=f108e117]: Utilizamos dados de APIs confiáveis para manter as cotações sempre atualizadas. Lembre-se que criptomoedas são ativos de alto risco e volatilidade, e o valor pode oscilar significativamente em curtos períodos de tempo.
+          - generic [ref=f108e119]:
+            - generic [ref=f108e120]: Espaço reservado
+            - strong [ref=f108e121]: Parceiros para comparar antes de fechar a operação
+            - generic [ref=f108e122]: 728×90
+        - complementary [ref=f108e123]:
+          - generic [ref=f108e124]:
+            - generic [ref=f108e125]: Resumo
+            - generic [ref=f108e126]:
+              - generic [ref=f108e127]:
+                - generic [ref=f108e128]: Preço atual
+                - strong [ref=f108e129]: R$ 321.202,09
+              - generic [ref=f108e130]:
+                - generic [ref=f108e131]: Variação 24h
+                - strong [ref=f108e132]: "-7.00%"
+              - generic [ref=f108e133]:
+                - generic [ref=f108e134]: Volume 24h
+                - strong [ref=f108e135]: R$ 0.00
+          - generic [ref=f108e136]:
+            - generic [ref=f108e137]: Outras Criptos
+            - generic [ref=f108e138]:
+              - link "Ξ Ethereum ETH" [ref=f108e139] [cursor=pointer]:
+                - /url: /cripto/eth
+                - generic [ref=f108e140]: Ξ
+                - generic [ref=f108e141]:
+                  - generic [ref=f108e142]: Ethereum
+                  - generic [ref=f108e143]: ETH
+              - link "◎ Solana SOL" [ref=f108e144] [cursor=pointer]:
+                - /url: /cripto/sol
+                - generic [ref=f108e145]: ◎
+                - generic [ref=f108e146]:
+                  - generic [ref=f108e147]: Solana
+                  - generic [ref=f108e148]: SOL
+              - link "✕ Ripple XRP" [ref=f108e149] [cursor=pointer]:
+                - /url: /cripto/xrp
+                - generic [ref=f108e150]: ✕
+                - generic [ref=f108e151]:
+                  - generic [ref=f108e152]: Ripple
+                  - generic [ref=f108e153]: XRP
+              - link "₳ Cardano ADA" [ref=f108e154] [cursor=pointer]:
+                - /url: /cripto/ada
+                - generic [ref=f108e155]: ₳
+                - generic [ref=f108e156]:
+                  - generic [ref=f108e157]: Cardano
+                  - generic [ref=f108e158]: ADA
+              - link "● Polkadot DOT" [ref=f108e159] [cursor=pointer]:
+                - /url: /cripto/dot
+                - generic [ref=f108e160]: ●
+                - generic [ref=f108e161]:
+                  - generic [ref=f108e162]: Polkadot
+                  - generic [ref=f108e163]: DOT
+  - alert [ref=f108e164]

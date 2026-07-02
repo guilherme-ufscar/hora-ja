@@ -275,23 +275,32 @@ export default function CryptoPageTemplate({ symbol }: CryptoPageTemplateProps) 
                             <div className="glass-panel p-6 rounded-[2rem]">
                                 {loading ? (
                                     <div className="h-64 bg-card-bg rounded-xl animate-pulse"></div>
-                                ) : chartData ? (
-                                    <div className="h-64 flex items-end gap-1">
+                                ) : chartData && chartData.datasets[0].data.length > 0 ? (
+                                    <div className="h-64 w-full flex items-end gap-[2px]">
                                         {chartData.datasets[0].data.map((price, i) => {
                                             const max = Math.max(...chartData.datasets[0].data);
                                             const min = Math.min(...chartData.datasets[0].data);
-                                            const height = ((price - min) / (max - min)) * 100;
+                                            const range = max - min || 1;
+                                            const height = ((price - min) / range) * 100;
                                             return (
                                                 <div
                                                     key={i}
-                                                    className="flex-1 bg-primary/50 hover:bg-primary transition-colors rounded-t-sm min-w-[2px]"
-                                                    style={{ height: `${Math.max(height, 5)}%` }}
+                                                    className="flex-1 rounded-t-sm transition-colors"
+                                                    style={{
+                                                        height: `${Math.max(height, 8)}%`,
+                                                        minWidth: '2px',
+                                                        background: `linear-gradient(to top, #10b981, #34d399)`,
+                                                    }}
                                                     title={`${chartData.labels[i]}: ${formatPrice(price)}`}
                                                 />
                                             );
                                         })}
                                     </div>
-                                ) : null}
+                                ) : (
+                                    <div className="h-64 flex items-center justify-center text-foreground/40">
+                                        Sem dados disponíveis
+                                    </div>
+                                )}
                                 <div className="flex justify-between mt-4 text-xs text-foreground/40">
                                     <span>{chartData?.labels[0] || "início"}</span>
                                     <span>{chartData?.labels[chartData.labels.length - 1] || "hoje"}</span>
