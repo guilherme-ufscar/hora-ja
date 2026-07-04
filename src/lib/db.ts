@@ -64,7 +64,7 @@ export async function runMigrations() {
 
             CREATE TABLE IF NOT EXISTS notification_rules (
                 id SERIAL PRIMARY KEY,
-                type VARCHAR(20) NOT NULL CHECK (type IN ('email', 'whatsapp')),
+                type VARCHAR(20) NOT NULL CHECK (type IN ('email')),
                 value VARCHAR(255) NOT NULL,
                 name VARCHAR(255),
                 currency_code VARCHAR(20) NOT NULL,

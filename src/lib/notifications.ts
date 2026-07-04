@@ -2,7 +2,7 @@ import pool from "./db";
 
 interface NotificationRule {
     id: number;
-    type: "email" | "whatsapp";
+    type: "email";
     value: string;
     currency_code: string;
     condition_type: "price_above" | "price_below" | "change_percent";
@@ -91,7 +91,7 @@ function evaluateCondition(rule: NotificationRule, currency: CurrencyData): bool
 }
 
 async function sendNotification(rule: NotificationRule, currency: CurrencyData) {
-    const { type, value, currency_code, condition_type, condition_value } = rule;
+    const { value, currency_code, condition_type, condition_value } = rule;
 
     const conditionLabels: Record<string, string> = {
         price_above: "subiu acima de",
@@ -107,11 +107,7 @@ async function sendNotification(rule: NotificationRule, currency: CurrencyData) 
         `Valor atual: R$ ${currency.price.toLocaleString("pt-BR")}\n` +
         `Variação: ${currency.change24h?.toFixed(2) || 0}%`;
 
-    if (type === "email") {
-        await sendEmail(value, `Alerta: ${currency_code}`, message);
-    } else if (type === "whatsapp") {
-        await sendWhatsApp(value, message);
-    }
+    await sendEmail(value, `Alerta: ${currency_code}`, message);
 }
 
 export async function sendEmail(to: string, subject: string, text: string) {
@@ -127,40 +123,6 @@ export async function sendEmail(to: string, subject: string, text: string) {
         to: to,
         subject: subject,
         text: text.replace(/[*_]/g, ""), // Remove formatação markdown
-    });
-    */
-}
-
-export async function sendWhatsApp(phoneNumber: string, message: string) {
-    // Implementar com Twilio WhatsApp Business API
-    console.log(`💬 Enviando WhatsApp para ${phoneNumber}:`, message);
-
-    /* Exemplo com Twilio:
-    const twilio = require("twilio");
-
-    const client = twilio(
-        process.env.TWILIO_ACCOUNT_SID,
-        process.env.TWILIO_AUTH_TOKEN
-    );
-
-    // Formatar número para WhatsApp (remover caracteres não numéricos)
-    const cleanNumber = phoneNumber.replace(/\D/g, "");
-
-    await client.messages.create({
-        body: message.replace(/[*_]/g, ""), // Remove formatação markdown
-        from: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`, // Ex: "whatsapp:+14155238886"
-        to: `whatsapp:+55${cleanNumber}`,
-    });
-
-    /* Alternativa com Twilio usando template:
-    await client.messages.create({
-        contentSid: process.env.TWILIO_CONTENT_SID, // Template pré-aprovado
-        from: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`,
-        to: `whatsapp:+55${cleanNumber}`,
-        contentVariables: JSON.stringify({
-            "1": currency_code,
-            "2": currency.price.toString()
-        })
     });
     */
 }

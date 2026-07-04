@@ -5,7 +5,7 @@ import { sendEmail } from "@/lib/notifications";
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
-        const type = searchParams.get("type"); // 'email' or 'whatsapp'
+        const type = searchParams.get("type"); // 'email'
         const value = searchParams.get("value");
 
         if (!type || !value) {
@@ -31,8 +31,8 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
         const {
-            type,           // 'email' or 'whatsapp'
-            value,          // email address or whatsapp number
+            type,           // 'email'
+            value,          // email address
             currency_code,   // Moeda/cripto para monitorar
             condition_type,  // 'price_above', 'price_below', 'change_percent'
             condition_value, // Valor ou percentual
@@ -45,21 +45,13 @@ export async function POST(request: NextRequest) {
         }
 
         // Validar tipo de contato
-        if (!["email", "whatsapp"].includes(type)) {
+        if (type !== "email") {
             return NextResponse.json({ error: "Tipo inválido" }, { status: 400 });
         }
 
-        // Validar email se for email
-        if (type === "email" && !value.includes("@")) {
+        // Validar email
+        if (!value.includes("@")) {
             return NextResponse.json({ error: "Email inválido" }, { status: 400 });
-        }
-
-        // Validar whatsapp (formato básico)
-        if (type === "whatsapp") {
-            const cleanNumber = value.replace(/\D/g, "");
-            if (cleanNumber.length < 10 || cleanNumber.length > 15) {
-                return NextResponse.json({ error: "Número de WhatsApp inválido" }, { status: 400 });
-            }
         }
 
         // Verificar se já existe uma regra igual
