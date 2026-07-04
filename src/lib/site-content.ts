@@ -189,6 +189,41 @@ export const affiliatePartners: AffiliatePartner[] = [
     },
 ];
 
+export const cryptoAffiliatePartners: AffiliatePartner[] = [
+    {
+        name: "Binance",
+        description: "A maior exchange de criptomoedas do mundo, com ampla variedade de ativos e liquidez.",
+        href: "https://www.binance.com/register?ref=169039213&utm_medium=web_share_link_whatsapp",
+        cta: "Criar conta",
+        logoText: "Binance",
+        logoClassName: "bg-yellow-500/10 text-yellow-600",
+    },
+    {
+        name: "Mercado Bitcoin",
+        description: "Uma das maiores exchanges brasileiras, com suporte local e fácil integração via Pix.",
+        href: "https://conta.mercadobitcoin.com.br/cadastro?mgm_token=8c43dbb1f4251f395a00f7ce6ee0d6a1b63463303c05963ff09e37bd76b1880b&utm_campaign=mgm&utm_source=app&utm_medium=app",
+        cta: "Abrir conta",
+        logoText: "MB",
+        logoClassName: "bg-emerald-500/10 text-emerald-600",
+    },
+    {
+        name: "OKX",
+        description: "Exchange global com ampla oferta de produtos cripto, spot e derivativos.",
+        href: "https://okx.com/pt-br/join/5054365",
+        cta: "Criar conta",
+        logoText: "OKX",
+        logoClassName: "bg-slate-500/10 text-slate-700",
+    },
+    {
+        name: "Gate",
+        description: "Exchange com bônus de boas-vindas para novos usuários e ampla variedade de ativos.",
+        href: "https://www.gate.com/pt/referral/registry?ref=UAMXV1Fd&ref_type=103&page=earnVoucher&utm_cmp=PEYEQdSb",
+        cta: "Resgatar bônus",
+        logoText: "Gate",
+        logoClassName: "bg-sky-500/10 text-sky-600",
+    },
+];
+
 export const articleContent = {
     iof: {
         slug: "/o-que-e-iof",

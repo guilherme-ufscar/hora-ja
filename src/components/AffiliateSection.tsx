@@ -1,18 +1,30 @@
-import { affiliatePartners } from "@/lib/site-content";
+import { affiliatePartners, type AffiliatePartner } from "@/lib/site-content";
 
-export default function AffiliateSection() {
+interface AffiliateSectionProps {
+    partners?: AffiliatePartner[];
+    eyebrow?: string;
+    title?: string;
+    description?: string;
+}
+
+export default function AffiliateSection({
+    partners = affiliatePartners,
+    eyebrow = "Onde comprar câmbio",
+    title = "Parceiros para comparar antes de fechar a operação",
+    description = "Cada página de moeda traz estes parceiros com links preparados para UTM e affiliate ID. Quando o dono do site fornecer os IDs finais, basta substituir os marcadores pendentes.",
+}: AffiliateSectionProps) {
     return (
         <section className="mt-16">
             <div className="flex flex-col gap-3 mb-8">
-                <span className="text-xs font-bold tracking-[0.25em] uppercase text-primary">Onde comprar câmbio</span>
-                <h2 className="text-3xl font-black tracking-tight text-foreground">Parceiros para comparar antes de fechar a operação</h2>
+                <span className="text-xs font-bold tracking-[0.25em] uppercase text-primary">{eyebrow}</span>
+                <h2 className="text-3xl font-black tracking-tight text-foreground">{title}</h2>
                 <p className="text-foreground/60 max-w-3xl">
-                    Cada página de moeda traz estes parceiros com links preparados para UTM e affiliate ID. Quando o dono do site fornecer os IDs finais, basta substituir os marcadores pendentes.
+                    {description}
                 </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
-                {affiliatePartners.map((partner) => (
+                {partners.map((partner) => (
                     <a
                         key={partner.name}
                         href={partner.href}

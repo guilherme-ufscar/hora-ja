@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import NotificationBell from "@/components/NotificationBell";
 import NotificationInfo from "@/components/NotificationInfo";
+import AffiliateSection from "@/components/AffiliateSection";
+import { cryptoAffiliatePartners } from "@/lib/site-content";
 
 interface CryptoData {
     symbol: string;
@@ -341,15 +343,12 @@ export default function CryptoPageTemplate({ symbol }: CryptoPageTemplateProps) 
                         </p>
                     </section>
 
-                    <section className="glass-panel p-8 border-dashed border-primary/20 mb-16">
-                        <div className="flex flex-col items-center justify-center text-center py-8">
-                            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary/70">
-                                Espaço reservado
-                            </span>
-                            <strong className="mt-2 text-base text-foreground/80">Parceiros para comparar antes de fechar a operação</strong>
-                            <span className="mt-1 text-sm text-foreground/50">728×90</span>
-                        </div>
-                    </section>
+                    <AffiliateSection
+                        partners={cryptoAffiliatePartners}
+                        eyebrow="Onde comprar cripto"
+                        title="Exchanges para comparar antes de fechar a operação"
+                        description="Compare taxas e recursos entre as principais exchanges antes de comprar ou vender."
+                    />
                 </div>
 
                 <aside className="xl:sticky xl:top-24 flex flex-col gap-6">
