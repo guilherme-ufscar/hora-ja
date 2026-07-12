@@ -33,7 +33,7 @@ export const homepageFaq: FAQItem[] = [
 
 export const currencyPageContent: Record<Exclude<CurrencyCode, "BRL">, CurrencyPageContent> = {
     USD: {
-        badgeLabel: "Atualizado a cada 10 min",
+        badgeLabel: "Tempo real",
         sourceLabel: "Fonte: AwesomeAPI",
         faq: [
             {
@@ -47,7 +47,7 @@ export const currencyPageContent: Record<Exclude<CurrencyCode, "BRL">, CurrencyP
         ],
     },
     EUR: {
-        badgeLabel: "Atualizado a cada 10 min",
+        badgeLabel: "Tempo real",
         sourceLabel: "Fonte: AwesomeAPI",
         faq: [
             {
@@ -61,7 +61,7 @@ export const currencyPageContent: Record<Exclude<CurrencyCode, "BRL">, CurrencyP
         ],
     },
     GBP: {
-        badgeLabel: "Atualizado a cada 10 min",
+        badgeLabel: "Tempo real",
         sourceLabel: "Fonte: AwesomeAPI",
         faq: [
             {
@@ -75,7 +75,7 @@ export const currencyPageContent: Record<Exclude<CurrencyCode, "BRL">, CurrencyP
         ],
     },
     ARS: {
-        badgeLabel: "Atualizado a cada 10 min",
+        badgeLabel: "Tempo real",
         sourceLabel: "Fonte: AwesomeAPI",
         faq: [
             {
@@ -89,7 +89,7 @@ export const currencyPageContent: Record<Exclude<CurrencyCode, "BRL">, CurrencyP
         ],
     },
     CAD: {
-        badgeLabel: "Atualizado a cada 10 min",
+        badgeLabel: "Tempo real",
         sourceLabel: "Fonte: AwesomeAPI",
         faq: [
             {
@@ -103,7 +103,7 @@ export const currencyPageContent: Record<Exclude<CurrencyCode, "BRL">, CurrencyP
         ],
     },
     CHF: {
-        badgeLabel: "Atualizado a cada 10 min",
+        badgeLabel: "Tempo real",
         sourceLabel: "Fonte: AwesomeAPI",
         faq: [
             {
@@ -117,7 +117,7 @@ export const currencyPageContent: Record<Exclude<CurrencyCode, "BRL">, CurrencyP
         ],
     },
     JPY: {
-        badgeLabel: "Atualizado a cada 10 min",
+        badgeLabel: "Tempo real",
         sourceLabel: "Fonte: AwesomeAPI",
         faq: [
             {
@@ -131,7 +131,7 @@ export const currencyPageContent: Record<Exclude<CurrencyCode, "BRL">, CurrencyP
         ],
     },
     CNY: {
-        badgeLabel: "Atualizado a cada 10 min",
+        badgeLabel: "Tempo real",
         sourceLabel: "Fonte: AwesomeAPI",
         faq: [
             {
