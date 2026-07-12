@@ -493,7 +493,7 @@ export async function getAvailableCurrencyPairs() {
 }
 
 const globalMarketConfig = [
-    { symbol: "^BVSP", name: "Ibovespa" },
+    { symbol: "EWZ", name: "Brasil (EWZ)" },
     { symbol: "SPY", name: "S&P 500" },
     { symbol: "QQQ", name: "Nasdaq" },
     { symbol: "GLD", name: "Ouro" },
@@ -513,36 +513,47 @@ function inferMarketState(): "open" | "closed" {
     return saoPauloHour >= 10 && saoPauloHour < 18 ? "open" : "closed";
 }
 
+// Plano gratuito da Alpha Vantage: 25 requisições/dia e 1 req/segundo.
+// Com 5 símbolos, o cache precisa durar horas (não minutos) para caber no orçamento diário.
+const GLOBAL_MARKET_REVALIDATE = 6 * 60 * 60; // 6 horas -> no máximo 20 requisições/dia
+
+function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function getGlobalMarketSnapshots(): Promise<GlobalMarketSnapshot[]> {
     if (!ALPHA_VANTAGE_API_KEY) {
         return [];
     }
 
     const marketState = inferMarketState();
+    const snapshots: Array<GlobalMarketSnapshot | null> = [];
 
-    const snapshots: Array<GlobalMarketSnapshot | null> = await Promise.all(
-        globalMarketConfig.map(async (market) => {
-            try {
-                const url = `${ALPHA_VANTAGE_BASE_URL}?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(market.symbol)}&apikey=${ALPHA_VANTAGE_API_KEY}`;
-                const data = await fetchJson<{ "Global Quote"?: Record<string, string> }>(url, TEN_MINUTES, false);
-                const quote = data["Global Quote"];
+    for (const market of globalMarketConfig) {
+        try {
+            const url = `${ALPHA_VANTAGE_BASE_URL}?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(market.symbol)}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+            const data = await fetchJson<{ "Global Quote"?: Record<string, string> }>(url, GLOBAL_MARKET_REVALIDATE, false);
+            const quote = data["Global Quote"];
 
-                if (!quote) {
-                    return null;
-                }
-
-                return {
-                    symbol: market.symbol,
-                    name: market.name,
-                    price: parseNumber(quote["05. price"]),
-                    changePercent: parseNumber((quote["10. change percent"] ?? "0").replace("%", "")),
-                    marketState,
-                } satisfies GlobalMarketSnapshot;
-            } catch {
-                return null;
+            if (!quote || !quote["05. price"]) {
+                snapshots.push(null);
+                continue;
             }
-        }),
-    );
+
+            snapshots.push({
+                symbol: market.symbol,
+                name: market.name,
+                price: parseNumber(quote["05. price"]),
+                changePercent: parseNumber((quote["10. change percent"] ?? "0").replace("%", "")),
+                marketState,
+            } satisfies GlobalMarketSnapshot);
+        } catch {
+            snapshots.push(null);
+        }
+
+        // respeita o limite de 1 requisição/segundo do plano gratuito
+        await delay(1200);
+    }
 
     return snapshots.filter((snapshot): snapshot is GlobalMarketSnapshot => snapshot !== null);
 }

@@ -3,7 +3,7 @@ import { formatCompactNumber, formatPercentage } from "@/lib/formatters";
 
 function getMarketCountdown(marketName: string, state: "open" | "closed") {
     const sessions: Record<string, string> = {
-        Ibovespa: state === "open" ? "B3 em sessão regular" : "Próxima janela: 10h–17h",
+        "Brasil (EWZ)": state === "open" ? "B3 em sessão regular" : "Próxima janela: 10h–17h",
         "S&P 500": state === "open" ? "Bolsa americana em sessão" : "Próxima janela: 9h30–16h",
         Nasdaq: state === "open" ? "Nasdaq em sessão" : "Próxima janela: 9h30–16h",
         Ouro: state === "open" ? "Mercado referencial em sessão" : "Referência fora do horário principal",
