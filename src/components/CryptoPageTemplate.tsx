@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import NotificationBell from "@/components/NotificationBell";
 import NotificationInfo from "@/components/NotificationInfo";
 import AffiliateSection from "@/components/AffiliateSection";
 import { cryptoAffiliatePartners } from "@/lib/site-content";
@@ -25,42 +24,72 @@ interface ChartData {
     }[];
 }
 
-const CRYPTO_CONFIG: Record<string, { name: string; icon: string; description: string; geckoId: string }> = {
+const CRYPTO_CONFIG: Record<string, { name: string; icon: string; description: string; geckoId: string; about: string[] }> = {
     BTC: {
         name: "Bitcoin",
         icon: "₿",
         description: "A primeira e mais valiosa criptomoeda do mundo, criada em 2009 por um desconhecido sob o pseudônimo Satoshi Nakamoto.",
         geckoId: "bitcoin",
+        about: [
+            "O Bitcoin foi a primeira criptomoeda a resolver o problema do gasto duplo sem depender de um banco ou intermediário central, usando uma rede pública de computadores e o mecanismo de consenso chamado proof-of-work. Seu fornecimento é limitado a 21 milhões de unidades, característica que costuma ser citada como argumento para o apelido de 'ouro digital'.",
+            "A cada quatro anos, aproximadamente, ocorre o chamado halving, que reduz pela metade a recompensa paga aos mineradores. Historicamente esses eventos concentram bastante atenção do mercado por reduzirem o ritmo de emissão de novas moedas.",
+            "No Brasil, o preço do BTC em reais reflete tanto a cotação internacional em dólar quanto a variação do próprio USD/BRL, por isso o valor em BRL pode se mover mesmo quando o preço em dólar está estável. Por ser um ativo de alta volatilidade, oscilações de dois dígitos em poucos dias não são incomuns.",
+        ],
     },
     ETH: {
         name: "Ethereum",
         icon: "Ξ",
         description: "Plataforma descentralizada que permite a criação de contratos inteligentes e aplicações descentralizadas (dApps).",
         geckoId: "ethereum",
+        about: [
+            "O Ethereum foi lançado em 2015 e ampliou o conceito introduzido pelo Bitcoin ao permitir contratos inteligentes — programas que executam regras automaticamente na blockchain. Isso o tornou a base de boa parte do ecossistema de finanças descentralizadas (DeFi), tokens e NFTs.",
+            "Em 2022, a rede migrou do modelo de mineração (proof-of-work) para o proof-of-stake, no evento conhecido como 'The Merge', reduzindo drasticamente seu consumo de energia e mudando a forma como novas moedas são emitidas e validadas.",
+            "O ether (ETH) é usado para pagar as taxas de transação da rede, chamadas de gas, cujo valor varia conforme a demanda. Como qualquer criptoativo, seu preço em reais combina a cotação global e a variação do dólar frente ao real, e está sujeito a forte volatilidade.",
+        ],
     },
     SOL: {
         name: "Solana",
         icon: "◎",
         description: "Blockchain de alta performance focado em escalabilidade e baixas taxas de transação.",
         geckoId: "solana",
+        about: [
+            "A Solana é uma blockchain projetada para alta velocidade e taxas baixas, capaz de processar um grande número de transações por segundo. Para isso, combina o mecanismo de proof-of-stake com uma técnica própria chamada proof-of-history, que ajuda a ordenar as transações de forma eficiente.",
+            "Esse foco em desempenho fez da Solana uma das redes mais usadas para aplicações que exigem muitas transações rápidas e baratas, como jogos, marketplaces de NFT e projetos de finanças descentralizadas.",
+            "Em contrapartida, a rede já passou por episódios de instabilidade e interrupções que geraram debate sobre o equilíbrio entre velocidade e descentralização. O preço do SOL em reais acompanha a cotação internacional e o câmbio do dólar, com volatilidade típica de criptoativos.",
+        ],
     },
     XRP: {
         name: "Ripple",
         icon: "✕",
-        description: "Protocolo de pagamento digital Designed para transações rápidas e de baixo custo entre instituições financeiras.",
+        description: "Protocolo de pagamento digital voltado a transações rápidas e de baixo custo entre instituições financeiras.",
         geckoId: "ripple",
+        about: [
+            "O XRP é o ativo digital associado ao XRP Ledger, uma rede criada com foco em pagamentos e transferências internacionais rápidas e de baixo custo entre instituições. Diferente do Bitcoin, não usa mineração: as transações são validadas por um conjunto de servidores independentes.",
+            "A empresa Ripple, ligada ao projeto, promove o uso do XRP como ponte para conversão entre moedas em remessas internacionais, um caso de uso que a diferencia de criptomoedas mais voltadas a reserva de valor ou contratos inteligentes.",
+            "O XRP esteve no centro de uma longa disputa judicial nos Estados Unidos sobre sua classificação regulatória, tema que historicamente influenciou bastante seu preço. Como os demais criptoativos, seu valor em reais depende da cotação global e do dólar, com alta volatilidade.",
+        ],
     },
     ADA: {
         name: "Cardano",
         icon: "₳",
         description: "Blockchain de terceira geração baseado em provas acadêmicas e pesquisa peer-reviewed.",
         geckoId: "cardano",
+        about: [
+            "A Cardano é uma blockchain de proof-of-stake conhecida por sua abordagem baseada em pesquisa acadêmica e revisão por pares antes de implementar novas funcionalidades. Seu ativo nativo é o ADA, nome inspirado na matemática Ada Lovelace.",
+            "O projeto é desenvolvido em fases com nomes de figuras históricas e busca oferecer contratos inteligentes e escalabilidade com forte ênfase em segurança e sustentabilidade da rede.",
+            "Por priorizar validação acadêmica, a evolução da Cardano tende a ser mais gradual do que a de concorrentes. O preço do ADA em reais segue a cotação internacional combinada à variação do dólar, e mantém a volatilidade característica do mercado cripto.",
+        ],
     },
     DOT: {
         name: "Polkadot",
         icon: "●",
         description: "Protocolo que conecta diferentes blockchains, permitindo a interoperabilidade entre redes.",
         geckoId: "polkadot",
+        about: [
+            "A Polkadot foi criada para resolver um problema específico do setor: permitir que diferentes blockchains se comuniquem e troquem informações entre si, algo conhecido como interoperabilidade. Seu ativo nativo é o DOT.",
+            "A rede usa uma arquitetura em que uma cadeia principal (Relay Chain) coordena a segurança de várias cadeias paralelas especializadas, chamadas parachains, que podem ser desenvolvidas por projetos independentes.",
+            "O DOT também é usado em governança e no mecanismo de staking que dá segurança à rede. Assim como os demais criptoativos, seu preço em reais combina a cotação global e o câmbio do dólar, estando sujeito a oscilações expressivas.",
+        ],
     },
 };
 
@@ -333,13 +362,13 @@ export default function CryptoPageTemplate({ symbol }: CryptoPageTemplateProps) 
 
                     <section className="prose prose-slate dark:prose-invert max-w-none mb-16">
                         <h2>Sobre o {config.name}</h2>
+                        {config.about.map((paragraph) => (
+                            <p key={paragraph}>{paragraph}</p>
+                        ))}
                         <p>
-                            O {config.name} ({symbol}) é uma das principais criptomoedas do mercado. O mercado de criptoativos opera 24 horas por dia, 7 dias por semana,
-                            o que significa que os preços podem mudar a qualquer momento.
-                        </p>
-                        <p>
-                            Utilizamos dados de APIs confiáveis para manter as cotações sempre atualizadas. Lembre-se que criptomoedas são ativos de alto risco
-                            e volatilidade, e o valor pode oscilar significativamente em curtos períodos de tempo.
+                            O mercado de criptoativos opera 24 horas por dia, 7 dias por semana, e os preços podem mudar a qualquer momento.
+                            As cotações exibidas têm caráter informativo e não constituem recomendação de investimento — criptomoedas são ativos
+                            de alto risco e volatilidade, e o valor pode oscilar significativamente em curtos períodos.
                         </p>
                     </section>
 

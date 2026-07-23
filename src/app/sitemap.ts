@@ -7,10 +7,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const staticRoutes = [
         "/",
         "/conversor",
+        "/cripto",
+        "/noticias",
         articleContent.iof.slug,
         articleContent.exterior.slug,
         articleContent.dolar.slug,
+        "/sobre",
+        "/contato",
+        "/politica-de-privacidade",
+        "/termos-de-uso",
     ];
+
+    const cryptoRoutes = ["btc", "eth", "sol", "xrp", "ada", "dot"].map((sym) => `/cripto/${sym}`);
 
     return [
         ...staticRoutes.map(
@@ -19,6 +27,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
                 lastModified: new Date(),
                 changeFrequency: route === "/" ? "hourly" : "weekly",
                 priority: route === "/" ? 1 : 0.8,
+            }),
+        ),
+        ...cryptoRoutes.map(
+            (route): MetadataRoute.Sitemap[number] => ({
+                url: `${SITE_URL}${route}`,
+                lastModified: new Date(),
+                changeFrequency: "hourly",
+                priority: 0.8,
             }),
         ),
         ...currencyDefinitions

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { SITE_URL } from "@/lib/metadata";
 
 const inter = Inter({
@@ -48,6 +49,7 @@ export default function RootLayout({
         />
         <Header />
           <main className="flex-1 flex flex-col">{children}</main>
+          <Footer />
         </div>
       </body>
     </html>

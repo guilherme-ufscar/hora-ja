@@ -11,7 +11,7 @@ export default function AffiliateSection({
     partners = affiliatePartners,
     eyebrow = "Onde comprar câmbio",
     title = "Parceiros para comparar antes de fechar a operação",
-    description = "Cada página de moeda traz estes parceiros com links preparados para UTM e affiliate ID. Quando o dono do site fornecer os IDs finais, basta substituir os marcadores pendentes.",
+    description = "Selecionamos corretoras, contas internacionais e serviços de remessa com boa reputação para você comparar taxas e condições antes de fechar qualquer operação de câmbio.",
 }: AffiliateSectionProps) {
     return (
         <section className="mt-16">
@@ -45,6 +45,10 @@ export default function AffiliateSection({
                     </a>
                 ))}
             </div>
+
+            <p className="mt-6 text-xs text-foreground/45 max-w-3xl">
+                Aviso: o HoraJá Cambio pode receber comissão por indicações feitas através dos links de parceiros listados acima. Isso não altera o valor pago por você e não influencia as cotações exibidas no site.
+            </p>
         </section>
     );
 }
